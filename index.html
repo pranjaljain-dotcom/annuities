@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=375, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ethos Annuities – Mobile</title>
   <!-- Load closest web-font approximations as @font-face fallbacks -->
   <!-- Portada (Latinotype slab-serif) → DM Serif Display; Hauss (Ethos sans) → Inter -->
@@ -54,7 +54,7 @@
       background: #e5e5e5;
       display: flex;
       justify-content: center;
-      padding: 24px 0 48px;
+      padding: 0;
       min-height: 100vh;
       font-family: var(--font-hauss);
     }
@@ -62,14 +62,16 @@
     button { cursor: pointer; border: none; outline: none; font-family: inherit; }
     p { margin: 0; }
 
-    /* ── Mobile frame — 375 px ──────────────────────────────────── */
+    /* ── Mobile frame — fluid, caps at 480 px ───────────────────── */
     .mobile {
-      width: 375px;
+      width: 100%;
+      max-width: 480px;
       background: var(--white);
       box-shadow: var(--shadow-xs);
       display: flex;
       flex-direction: column;
       gap: 48px;
+      overflow-x: hidden;
     }
 
     /* ════════════════════════════════════════
@@ -82,7 +84,7 @@
       justify-content: space-between;
       padding: 16px;
       height: 68px;
-      width: 375px;
+      width: 100%;
       flex-shrink: 0;
     }
     .nav-right { display: flex; align-items: center; gap: 16px; }
@@ -119,7 +121,7 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    .hero-inner { display: flex; flex-direction: column; gap: 24px; align-items: center; width: 327px; }
+    .hero-inner { display: flex; flex-direction: column; gap: 24px; align-items: center; width: calc(100% - 48px); max-width: 327px; }
 
     /* trustpilot */
     .tp-row { display: flex; align-items: flex-end; gap: 4px; justify-content: center; width: 100%; }
@@ -127,21 +129,21 @@
     .tp-text {
       font-family: var(--font-hauss);
       font-size: var(--fs-text-m); font-weight: 400; line-height: var(--lh-text-m);
-      color: var(--white); white-space: nowrap;
+      color: var(--white);
     }
 
     /* headline */
     .hero-hl-group { display: flex; flex-direction: column; gap: 16px; width: 100%; text-align: center; }
     .hero-h1 {
       font-family: 'Portada', 'DM Serif Display', Georgia, serif;
-      font-size: 40px;
+      font-size: clamp(32px, 10.7vw, 40px);
       font-style: normal;
       font-weight: 500;
-      line-height: 48px;
+      line-height: 1.2;
       letter-spacing: -0.19px;
       color: #FFF;
       text-align: center;
-      width: 327px;
+      width: 100%;
     }
     .hero-h1 .accent { color: var(--accent-yellow); }
     .hero-sub {
@@ -156,7 +158,7 @@
     }
 
     /* CTA buttons */
-    .ctas { width: 327px; }
+    .ctas { width: 100%; }
     .btn-clover {
       background: var(--bright-clover); color: var(--night-100);
       font-family: var(--font-theinhardt);
@@ -174,11 +176,12 @@
       min-height: 56px; width: 100%; text-align: center; white-space: nowrap;
     }
 
-    /* ── Hero person image — exact Figma dimensions + transform ── */
-    /* Container: 265×291. Inner wrapper gets rotate(180deg) scaleY(-1) = scaleX(-1) (mirror X).
-       Image: h=104.71%, w=172.41%, offset left=-67.53%, top=-4.71% */
+    /* ── Hero person image — scales proportionally ── */
+    /* Container: 265×291 at 375px wide = 70.7% wide. Mirror X via rotate+scaleY. */
     .hero-photo-wrap {
-      width: 265px; height: 291px;
+      width: min(265px, 70.7%);
+      aspect-ratio: 265 / 291;
+      height: auto;
       position: relative; flex-shrink: 0;
       overflow: hidden;
     }
@@ -189,7 +192,7 @@
     .hero-photo-flip {
       transform: rotate(180deg) scaleY(-1); /* = mirror horizontally */
       flex: none;
-      width: 265px; height: 291px;
+      width: 100%; height: 100%;
       position: relative; overflow: hidden;
       pointer-events: none;
     }
@@ -206,7 +209,7 @@
     /* ── Award badges ─────────────────────────────────────────── */
     .wreaths {
       display: flex; gap: 15px; align-items: center; justify-content: center;
-      width: 349px; flex-shrink: 0;
+      width: calc(100% - 26px); max-width: 349px; flex-shrink: 0;
     }
     .badge { display: flex; align-items: center; justify-content: center; height: 101px; }
     .badge-bi  { gap: 10px; width: 157px; }
@@ -260,7 +263,7 @@
     }
 
     /* ── Why Retirees ───────────────────────────────────────────── */
-    .why { display: flex; flex-direction: column; gap: 32px; align-items: center; width: 335px; }
+    .why { display: flex; flex-direction: column; gap: 32px; align-items: center; width: calc(100% - 40px); max-width: 335px; }
     .benefit-list { display: flex; flex-direction: column; gap: 32px; width: 100%; }
     .benefit-item { display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%; }
 
@@ -355,7 +358,7 @@
     /* ── How Annuities Work ─────────────────────────────────────── */
     .bg-truffle { background: var(--light-truffle); padding: 60px 20px; width: 100%; }
     .how-inner { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
-    .how-cards { display: flex; flex-direction: column; gap: 40px; width: 335px; }
+    .how-cards { display: flex; flex-direction: column; gap: 40px; width: 100%; }
     .cards-list { display: flex; flex-direction: column; gap: 16px; }
     .cards-label {
       font-family: var(--font-hauss);
@@ -387,13 +390,13 @@
     .trust { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
     .trust-hdr { display: flex; flex-direction: column; gap: 16px; text-align: center; width: 100%; padding: 0 20px; }
     .trust-stats { display: flex; flex-direction: column; gap: 32px; align-items: center; width: 100%; }
-    .stat-item { display: flex; flex-direction: column; gap: 16px; align-items: center; width: 270px; }
+    .stat-item { display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%; max-width: 270px; }
 
     /* ── FAQ ─────────────────────────────────────────────────────── */
     .faq-outer { display: flex; flex-direction: column; gap: 56px; align-items: center; width: 100%; }
     .faq-bg { background: var(--light-truffle); padding: 60px 20px; width: 100%; }
-    .faq-inner { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 335px; }
-    .faq-list { display: flex; flex-direction: column; width: 335px; }
+    .faq-inner { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
+    .faq-list { display: flex; flex-direction: column; width: 100%; }
     .faq-item { width: 100%; }
     .faq-item + .faq-item { border-top: 1px solid var(--night-20); }
     .faq-item input[type="checkbox"] { display: none; }
@@ -424,32 +427,32 @@
       border-radius: 24px; box-shadow: var(--shadow-hero);
       display: flex; flex-direction: column; align-items: center;
       padding-top: 32px; gap: 31px;
-      width: 375px; height: 654px;
+      width: 100%; min-height: 654px;
       position: relative; overflow: hidden; flex-shrink: 0;
     }
     .hero-bottom-inner {
       display: flex; flex-direction: column; gap: 24px; align-items: center;
-      width: 327px; position: relative; z-index: 2;
+      width: calc(100% - 48px); max-width: 327px; position: relative; z-index: 2;
     }
     .hero-bottom-text {
       display: flex; flex-direction: column; gap: 12px; align-items: center;
       text-align: center; color: var(--white);
-      height: 228px; width: 100%; justify-content: center;
+      min-height: 228px; width: 100%; justify-content: center;
     }
     .hero-bottom-h {
       font-family: var(--font-portada);
-      font-size: var(--fs-display); font-weight: 600; line-height: var(--lh-display);
-      letter-spacing: -0.97px; color: var(--white); width: 327px;
+      font-size: clamp(32px, 10.7vw, 40px); font-weight: 600; line-height: 1.2;
+      letter-spacing: -0.97px; color: var(--white); width: 100%;
     }
     .hero-bottom-sub {
       font-family: var(--font-hauss);
       font-size: var(--fs-text-m); font-weight: 400; line-height: var(--lh-text-m);
-      color: var(--white); width: 302px;
+      color: var(--white); width: 100%;
     }
-    /* Bottom image — exact Figma position: left:23px, top from bottom, 364×259 */
+    /* Bottom image — scales with container width */
     .hero-bottom-photo {
-      position: absolute; bottom: 0; left: 23px;
-      width: 364px; height: 259px; z-index: 1;
+      position: absolute; bottom: 0; left: 6.1%;
+      width: 97%; height: 259px; z-index: 1;
     }
     .hero-bottom-photo img {
       width: 100%; height: 100%;
@@ -853,7 +856,7 @@
               <p class="hero-bottom-h">Your Retirement. Your Peace of Mind.</p>
               <p class="hero-bottom-sub">Secure guaranteed income now and enjoy the confidence of knowing your future is protected.</p>
             </div>
-            <button class="btn-clover" style="width:327px;">Get Started</button>
+            <button class="btn-clover">Get Started</button>
           </div>
           <div class="hero-bottom-photo">
             <img src="https://www.figma.com/api/mcp/asset/df39bf90-19c2-4545-8d98-90af6e71544d"
