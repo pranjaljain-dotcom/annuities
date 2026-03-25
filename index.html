@@ -553,19 +553,27 @@
     ══════════════════════════════════════════ */
     @media (min-width: 1024px) {
       /* ── Navbar: logo left · links left-aligned after logo · icons far right ── */
+      /* Default: clean white, no blur (over white nav-spacer) */
       .navbar { padding: 16px 60px; justify-content: flex-start; gap: 0; background: var(--white); backdrop-filter: none; -webkit-backdrop-filter: none; }
+      /* Over green hero while scrolling: frosted glass on dark */
+      .navbar.over-dark {
+        background: rgba(4, 70, 62, 0.18);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
       .desktop-links {
         display: flex; gap: 28px; align-items: center;
         position: static; transform: none;
         margin-left: 32px;
       }
-      /* Desktop nav is always white — keep links dark regardless of scroll class */
-      .navbar.over-dark .desktop-links a,
+      /* Links white over dark hero, dark over white sections */
+      .navbar.over-dark .desktop-links a { color: var(--white); }
       .navbar.nav-scrolled .desktop-links a { color: var(--night-100); }
-      .navbar.over-dark .nav-icons,
+      .navbar.over-dark .nav-icons { color: var(--white); }
       .navbar.nav-scrolled .nav-icons { color: var(--night-100); }
-      /* Keep Ethos logo in its natural green colour on desktop */
-      .navbar.over-dark .ethos-logo img { filter: none; }
+      /* Logo white over dark hero, natural green over white */
+      .navbar.over-dark .ethos-logo img { filter: brightness(0) invert(1); }
+      .navbar.nav-scrolled .ethos-logo img { filter: none; }
       .nav-icons { display: flex; margin-left: auto; }
       .hamburger { display: none; }
       .btn-nav { display: none; }
