@@ -97,6 +97,10 @@
     }
     /* Spacer so fixed nav doesn't overlap content */
     .nav-spacer { height: 68px; flex-shrink: 0; }
+
+    /* Logo / hamburger colour swap over dark backgrounds */
+    .navbar.over-dark .ethos-logo img { filter: brightness(0) invert(1); }
+    .navbar.over-dark .hamburger span  { background: var(--white); }
     .nav-right { display: flex; align-items: center; gap: 16px; }
     .btn-nav {
       background: var(--bright-clover);
@@ -481,7 +485,7 @@
   <!-- ═══════ NAV (sticky, direct child of .mobile) ═══════ -->
   <nav class="navbar">
       <!-- Ethos Logo — exact Figma vector assets, 86.968×16.456px container -->
-      <div style="position:relative;width:86.968px;height:16.456px;flex-shrink:0;" aria-label="Ethos">
+      <div class="ethos-logo" style="position:relative;width:86.968px;height:16.456px;flex-shrink:0;" aria-label="Ethos">
         <!-- E (Vector1): top=1.87%, right=86.58%, bottom=1.99%, left=0 -->
         <div style="position:absolute;top:1.87%;right:86.58%;bottom:1.99%;left:0;">
           <div style="position:absolute;top:-1.75%;left:-2.38%;right:-2.38%;bottom:-1.75%;">
@@ -525,7 +529,7 @@
 
   <!-- ═══════ HERO ═══════ -->
   <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;margin-top:-48px;">
-    <div class="hero">
+    <div class="hero" id="hero-top">
       <div class="hero-inner">
 
         <!-- Trustpilot -->
@@ -865,7 +869,7 @@
         </div>
 
         <!-- Bottom CTA Hero -->
-        <div class="hero-bottom">
+        <div class="hero-bottom" id="hero-bottom">
           <div class="hero-bottom-inner">
             <div class="hero-bottom-text">
               <p class="hero-bottom-h">Your Retirement. Your Peace of Mind.</p>
@@ -884,5 +888,22 @@
 
   </div><!-- /sections -->
 </div><!-- /mobile -->
+<script>
+  (function() {
+    var nav = document.querySelector('.navbar');
+    var darkSections = [document.getElementById('hero-top'), document.getElementById('hero-bottom')];
+    function update() {
+      var navBottom = nav.getBoundingClientRect().bottom;
+      var overDark = darkSections.some(function(el) {
+        if (!el) return false;
+        var r = el.getBoundingClientRect();
+        return r.top < navBottom && r.bottom > 0;
+      });
+      nav.classList.toggle('over-dark', overDark);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
 </body>
 </html>
