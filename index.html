@@ -78,9 +78,9 @@
        NAV BAR
     ════════════════════════════════════════ */
     .navbar {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       position: fixed;
       top: 0;
       left: 50%;
@@ -94,6 +94,14 @@
       width: 100%;
       max-width: 480px;
       flex-shrink: 0;
+      transition: background 0.35s ease, backdrop-filter 0.35s ease;
+    }
+    /* Frosted white once scrolled past hero */
+    .navbar.nav-scrolled {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
     }
     /* Spacer so fixed nav doesn't overlap content */
     .nav-spacer { height: 68px; flex-shrink: 0; }
@@ -101,6 +109,14 @@
     /* Logo / hamburger colour swap over dark backgrounds */
     .navbar.over-dark .ethos-logo img { filter: brightness(0) invert(1); }
     .navbar.over-dark .hamburger span  { background: var(--white); }
+
+    /* Logo collapse to leaf symbol on scroll */
+    .ethos-logo { transition: width 0.4s ease; overflow: hidden; }
+    .logo-letters { position: absolute; inset: 0; transition: opacity 0.25s ease; }
+    .logo-symbol  { transition: left 0.4s ease, right 0.4s ease; }
+    .navbar.nav-scrolled .logo-letters { opacity: 0; pointer-events: none; }
+    .navbar.nav-scrolled .ethos-logo   { width: 16.456px !important; }
+    .navbar.nav-scrolled .logo-symbol  { left: 0 !important; right: 0 !important; }
     .nav-right { display: flex; align-items: center; gap: 16px; }
     .btn-nav {
       background: var(--bright-clover);
@@ -486,36 +502,39 @@
   <nav class="navbar">
       <!-- Ethos Logo — exact Figma vector assets, 86.968×16.456px container -->
       <div class="ethos-logo" style="position:relative;width:86.968px;height:16.456px;flex-shrink:0;" aria-label="Ethos">
-        <!-- E (Vector1): top=1.87%, right=86.58%, bottom=1.99%, left=0 -->
-        <div style="position:absolute;top:1.87%;right:86.58%;bottom:1.99%;left:0;">
-          <div style="position:absolute;top:-1.75%;left:-2.38%;right:-2.38%;bottom:-1.75%;">
-            <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
-                 src="https://www.figma.com/api/mcp/asset/e9879f6e-e485-40bb-80b9-c45319ab6ba6" />
+        <!-- Letters: E, TH, O, S — hidden when scrolled -->
+        <div class="logo-letters">
+          <!-- E (Vector1) -->
+          <div style="position:absolute;top:1.87%;right:86.58%;bottom:1.99%;left:0;">
+            <div style="position:absolute;top:-1.75%;left:-2.38%;right:-2.38%;bottom:-1.75%;">
+              <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
+                   src="https://www.figma.com/api/mcp/asset/e9879f6e-e485-40bb-80b9-c45319ab6ba6" />
+            </div>
+          </div>
+          <!-- TH (Vector) -->
+          <div style="position:absolute;top:1.87%;right:65.49%;bottom:1.99%;left:19.35%;">
+            <div style="position:absolute;top:-1.75%;left:-2.11%;right:-2.11%;bottom:-1.75%;">
+              <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
+                   src="https://www.figma.com/api/mcp/asset/15b7f02a-2307-468c-b4e9-0932e63bbe43" />
+            </div>
+          </div>
+          <!-- O (Vector2) -->
+          <div style="position:absolute;top:1.87%;right:44.39%;bottom:1.99%;left:40.45%;">
+            <div style="position:absolute;top:-1.75%;left:-2.11%;right:-2.11%;bottom:-1.75%;">
+              <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
+                   src="https://www.figma.com/api/mcp/asset/13a8066c-4a82-475c-9c7a-215f553e887f" />
+            </div>
+          </div>
+          <!-- S (Vector3) -->
+          <div style="position:absolute;top:0.43%;right:0;bottom:0.55%;left:84.92%;">
+            <div style="position:absolute;top:-1.7%;left:-2.96%;right:-2.12%;bottom:-1.7%;">
+              <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
+                   src="https://www.figma.com/api/mcp/asset/eebc4377-11ad-445d-ad40-b9aa50745f79" />
+            </div>
           </div>
         </div>
-        <!-- TH (Vector): top=1.87%, right=65.49%, bottom=1.99%, left=19.35% -->
-        <div style="position:absolute;top:1.87%;right:65.49%;bottom:1.99%;left:19.35%;">
-          <div style="position:absolute;top:-1.75%;left:-2.11%;right:-2.11%;bottom:-1.75%;">
-            <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
-                 src="https://www.figma.com/api/mcp/asset/15b7f02a-2307-468c-b4e9-0932e63bbe43" />
-          </div>
-        </div>
-        <!-- O (Vector2): top=1.87%, right=44.39%, bottom=1.99%, left=40.45% -->
-        <div style="position:absolute;top:1.87%;right:44.39%;bottom:1.99%;left:40.45%;">
-          <div style="position:absolute;top:-1.75%;left:-2.11%;right:-2.11%;bottom:-1.75%;">
-            <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
-                 src="https://www.figma.com/api/mcp/asset/13a8066c-4a82-475c-9c7a-215f553e887f" />
-          </div>
-        </div>
-        <!-- S (Vector3): top=0.43%, right=0, bottom=0.55%, left=84.92% -->
-        <div style="position:absolute;top:0.43%;right:0;bottom:0.55%;left:84.92%;">
-          <div style="position:absolute;top:-1.7%;left:-2.96%;right:-2.12%;bottom:-1.7%;">
-            <img alt="" style="display:block;max-width:none;width:100%;height:100%;"
-                 src="https://www.figma.com/api/mcp/asset/eebc4377-11ad-445d-ad40-b9aa50745f79" />
-          </div>
-        </div>
-        <!-- Leaf mark (Group): top=0, right=19.91%, bottom=0, left=61.17% -->
-        <div style="position:absolute;top:0;right:19.91%;bottom:0;left:61.17%;">
+        <!-- Leaf mark — stays visible, collapses to fill container when scrolled -->
+        <div class="logo-symbol" style="position:absolute;top:0;right:19.91%;bottom:0;left:61.17%;">
           <img alt="" style="position:absolute;display:block;max-width:none;width:100%;height:100%;"
                src="https://www.figma.com/api/mcp/asset/3290d9ee-777e-4eae-b29d-418de98273bd" />
         </div>
@@ -891,9 +910,20 @@
 <script>
   (function() {
     var nav = document.querySelector('.navbar');
-    var darkSections = [document.getElementById('hero-top'), document.getElementById('hero-bottom')];
+    var heroTop    = document.getElementById('hero-top');
+    var heroBottom = document.getElementById('hero-bottom');
+    var darkSections = [heroTop, heroBottom];
+
     function update() {
-      var navBottom = nav.getBoundingClientRect().bottom;
+      var navHeight = nav.getBoundingClientRect().height;
+
+      // nav-scrolled: hero-top has fully scrolled past the nav
+      var heroTopRect = heroTop ? heroTop.getBoundingClientRect() : null;
+      var pastHero = heroTopRect && heroTopRect.bottom <= navHeight;
+      nav.classList.toggle('nav-scrolled', pastHero);
+
+      // over-dark: any dark section is behind the nav
+      var navBottom = navHeight;
       var overDark = darkSections.some(function(el) {
         if (!el) return false;
         var r = el.getBoundingClientRect();
@@ -901,6 +931,7 @@
       });
       nav.classList.toggle('over-dark', overDark);
     }
+
     window.addEventListener('scroll', update, { passive: true });
     update();
   })();
