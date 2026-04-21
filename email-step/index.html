@@ -635,11 +635,11 @@
     document.querySelector('.btn-next').addEventListener('click', () => {
       const val = emailInput.value.trim();
       if (!val) {
-        hintText.textContent = 'Email address is required.';
+        hintText.textContent = 'Enter your email so we know where to send your options.';
         inputWrapper.classList.add('is-destructive');
         hintText.classList.add('visible');
       } else if (!emailRegex.test(val)) {
-        hintText.textContent = 'Please enter a valid email address.';
+        hintText.textContent = 'That doesn\'t look right — please check your email address.';
         inputWrapper.classList.add('is-destructive');
         hintText.classList.add('visible');
       } else {
