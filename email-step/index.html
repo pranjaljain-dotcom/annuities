@@ -346,6 +346,32 @@
       transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /* ── MOBILE: native keyboard, fixed footer ── */
+    @media (hover: none) and (pointer: coarse) {
+      body {
+        align-items: flex-start;
+        padding: 0;
+        background: #fff;
+      }
+      .phone {
+        width: 100%;
+        min-height: 100dvh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .bottom-wrapper {
+        position: fixed;
+        transition: none;
+        transform: none !important;
+      }
+      .keyboard {
+        display: none !important;
+      }
+      .content {
+        padding-bottom: 100px; /* space above fixed footer */
+      }
+    }
+
     /* ── iOS KEYBOARD ───────────────────────────────────── */
     .keyboard {
       background: #CDD0D5;
@@ -619,13 +645,17 @@
       keyboard.removeAttribute('aria-hidden');
     }
 
-    bottomWrapper.style.transition = 'none';
-    slideDown();
-    requestAnimationFrame(() => {
+    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    if (!isMobile) {
+      bottomWrapper.style.transition = 'none';
+      slideDown();
       requestAnimationFrame(() => {
-        bottomWrapper.style.transition = '';
+        requestAnimationFrame(() => {
+          bottomWrapper.style.transition = '';
+        });
       });
-    });
+    }
 
     const inputWrapper = document.getElementById('inputWrapper');
     const hintText = document.getElementById('hintText');
@@ -655,12 +685,14 @@
       }
     });
 
-    emailInput.addEventListener('focus', slideUp);
-    emailInput.addEventListener('blur', () => {
-      setTimeout(() => {
-        if (document.activeElement !== emailInput) slideDown();
-      }, 80);
-    });
+    if (!isMobile) {
+      emailInput.addEventListener('focus', slideUp);
+      emailInput.addEventListener('blur', () => {
+        setTimeout(() => {
+          if (document.activeElement !== emailInput) slideDown();
+        }, 80);
+      });
+    }
 
     keyboard.addEventListener('mousedown', (e) => {
       e.preventDefault();
