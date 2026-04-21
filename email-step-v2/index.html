@@ -618,10 +618,7 @@
     }
 
     if (!isMobile) {
-      // Attach focus listener AFTER initial programmatic focus fires
-      setTimeout(() => {
-        emailInput.addEventListener('focus', slideUp);
-      }, 200);
+      emailInput.addEventListener('focus', slideUp);
       emailInput.addEventListener('blur', () => {
         setTimeout(() => { if (document.activeElement !== emailInput) slideDown(); }, 80);
       });
@@ -643,8 +640,8 @@
       });
     }
 
-    // Desktop: focus and slide keyboard up on load
-    setTimeout(() => { emailInput.focus(); slideUp(); }, 100);
+    // Desktop: focus on load — focus listener handles slideUp
+    setTimeout(() => emailInput.focus(), 100);
 
     // iOS: focus on first touch (only valid gesture to open native keyboard)
     document.addEventListener('touchstart', function openKeyboard() {
