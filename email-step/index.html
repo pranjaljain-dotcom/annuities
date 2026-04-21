@@ -361,7 +361,8 @@
       }
       .bottom-wrapper {
         position: fixed;
-        transition: none;
+        bottom: 0;
+        transition: bottom 0.1s ease-out;
         transform: none !important;
       }
       .keyboard {
@@ -646,6 +647,16 @@
     }
 
     const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    if (isMobile && window.visualViewport) {
+      const footer = document.querySelector('.bottom-wrapper');
+      const updateFooter = () => {
+        const keyboardHeight = window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop;
+        footer.style.bottom = Math.max(0, keyboardHeight) + 'px';
+      };
+      window.visualViewport.addEventListener('resize', updateFooter);
+      window.visualViewport.addEventListener('scroll', updateFooter);
+    }
 
     if (!isMobile) {
       bottomWrapper.style.transition = 'none';
