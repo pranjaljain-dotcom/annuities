@@ -643,8 +643,8 @@
       });
     }
 
-    // Desktop: focus immediately so keyboard slides up on load
-    setTimeout(() => emailInput.focus(), 100);
+    // Desktop: focus and slide keyboard up on load
+    setTimeout(() => { emailInput.focus(); slideUp(); }, 100);
 
     // iOS: focus on first touch (only valid gesture to open native keyboard)
     document.addEventListener('touchstart', function openKeyboard() {
