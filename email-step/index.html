@@ -500,7 +500,7 @@
                 </svg>
               </div>
             </div>
-            <span class="hint-text" id="hintText">This is an error message.</span>
+            <span class="hint-text" id="hintText">Please enter a valid email address.</span>
           </div>
         </div>
 
@@ -630,8 +630,16 @@
     const inputWrapper = document.getElementById('inputWrapper');
     const hintText = document.getElementById('hintText');
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     document.querySelector('.btn-next').addEventListener('click', () => {
-      if (!emailInput.value.trim()) {
+      const val = emailInput.value.trim();
+      if (!val) {
+        hintText.textContent = 'Email address is required.';
+        inputWrapper.classList.add('is-destructive');
+        hintText.classList.add('visible');
+      } else if (!emailRegex.test(val)) {
+        hintText.textContent = 'Please enter a valid email address.';
         inputWrapper.classList.add('is-destructive');
         hintText.classList.add('visible');
       } else {
