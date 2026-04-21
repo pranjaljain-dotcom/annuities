@@ -606,8 +606,8 @@
     const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     const bottomWrapper = document.querySelector('.bottom-wrapper');
-    function slideUp()   { keyboardWrapper.classList.add('is-open'); bottomWrapper.style.display = 'none'; }
-    function slideDown() { keyboardWrapper.classList.remove('is-open'); bottomWrapper.style.display = ''; }
+    function slideUp()   { keyboardWrapper.classList.add('is-open'); keyboardWrapper.style.bottom = '0'; bottomWrapper.style.display = 'none'; }
+    function slideDown() { keyboardWrapper.classList.remove('is-open'); keyboardWrapper.style.bottom = ''; bottomWrapper.style.display = ''; }
 
     if (!isMobile) {
       emailInput.addEventListener('focus', slideUp);
