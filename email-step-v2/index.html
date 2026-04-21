@@ -500,10 +500,17 @@
 
   <script>
     const emailInput    = document.getElementById('emailInput');
-    const keyboard      = document.getElementById('keyboard');
     const bottomWrapper = document.querySelector('.bottom-wrapper');
 
+    // Desktop: focus immediately
     setTimeout(() => emailInput.focus(), 100);
+
+    // iOS: focus() only opens keyboard inside a user gesture —
+    // use first touchstart anywhere on the page as that gesture
+    document.addEventListener('touchstart', function openKeyboard() {
+      emailInput.focus();
+      document.removeEventListener('touchstart', openKeyboard);
+    }, { once: true, passive: true });
 
     const inputWrapper = document.getElementById('inputWrapper');
     const hintText = document.getElementById('hintText');

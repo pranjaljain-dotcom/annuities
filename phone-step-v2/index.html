@@ -529,10 +529,15 @@
 
     document.getElementById('btnNext').addEventListener('click', validate);
 
+    // Desktop: focus after slide-in animation completes
     setTimeout(() => phoneInput.focus(), 350);
 
-    // Wait for slide-in animation (320ms) then focus input
-    setTimeout(() => phoneInput.focus(), 350);
+    // iOS: focus() only opens keyboard inside a user gesture —
+    // use first touchstart anywhere on the page as that gesture
+    document.addEventListener('touchstart', function openKeyboard() {
+      phoneInput.focus();
+      document.removeEventListener('touchstart', openKeyboard);
+    }, { once: true, passive: true });
   </script>
 
 </body>
