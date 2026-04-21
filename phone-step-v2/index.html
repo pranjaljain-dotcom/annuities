@@ -661,10 +661,7 @@
     function slideDown() { keyboardWrapper.classList.remove('is-open'); bottomWrapper.style.display = ''; }
 
     if (!isMobile) {
-      // Attach focus listener AFTER initial programmatic focus fires
-      setTimeout(() => {
-        phoneInput.addEventListener('focus', slideUp);
-      }, 500);
+      phoneInput.addEventListener('focus', slideUp);
       phoneInput.addEventListener('blur', () => {
         setTimeout(() => { if (document.activeElement !== phoneInput) slideDown(); }, 80);
       });
