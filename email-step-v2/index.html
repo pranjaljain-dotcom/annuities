@@ -366,10 +366,10 @@
       z-index: 200;
     }
 
-    /* ── KEYBOARD — slides up above the CTA ─────────────── */
+    /* ── KEYBOARD — slides up from bottom ───────────────── */
     .keyboard-wrapper {
       position: absolute;
-      bottom: 96px; /* footer height */
+      bottom: 0;
       left: 0;
       right: 0;
       z-index: 250;
@@ -606,11 +606,22 @@
     const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     const bottomWrapper = document.querySelector('.bottom-wrapper');
-    function slideUp()   { keyboardWrapper.classList.add('is-open'); keyboardWrapper.style.bottom = '0'; bottomWrapper.style.display = 'none'; }
-    function slideDown() { keyboardWrapper.classList.remove('is-open'); keyboardWrapper.style.bottom = ''; bottomWrapper.style.display = ''; }
+    let keyboardOpened = false;
+    function slideUp()   {
+      keyboardWrapper.classList.add('is-open');
+      bottomWrapper.style.display = 'none';
+      keyboardOpened = true;
+    }
+    function slideDown() {
+      keyboardWrapper.classList.remove('is-open');
+      bottomWrapper.style.display = '';
+    }
 
     if (!isMobile) {
-      emailInput.addEventListener('focus', slideUp);
+      // Attach focus listener AFTER initial programmatic focus fires
+      setTimeout(() => {
+        emailInput.addEventListener('focus', slideUp);
+      }, 200);
       emailInput.addEventListener('blur', () => {
         setTimeout(() => { if (document.activeElement !== emailInput) slideDown(); }, 80);
       });
