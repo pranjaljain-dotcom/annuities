@@ -346,6 +346,31 @@ body {
 .dropdown-item.is-selected .dropdown-item-inner,
 .dropdown-item:hover .dropdown-item-inner { background: #F3F7F7; }
 
+/* ── OTP screen ─────────────────────────────────────────────── */
+.otp-header { display: flex; flex-direction: column; gap: 16px; }
+.otp-icon-wrap { display: flex; }
+.otp-row { display: flex; gap: 8px; justify-content: space-between; }
+.otp-box {
+  flex: 1; height: 56px; max-width: 46px;
+  border: 2px solid #D4D4D4; border-radius: 8px; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Hauss',sans-serif; font-weight: 500;
+  font-size: 24px; color: #272727;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.otp-box.is-active {
+  border-color: #056257;
+  box-shadow: 0px 1px 2px 0px rgba(16,24,40,0.05), 0 0 0 3px rgba(5,98,87,0.12);
+}
+.otp-box.is-filled { border-color: #056257; }
+.otp-hint {
+  font-family: 'Hauss',sans-serif; font-weight: 400;
+  font-size: 13px; line-height: 18px; color: #525252; margin-top: 16px;
+}
+.otp-hint a { color: #056257; text-decoration: none; font-weight: 500; }
+.btn-next:disabled { background: #D4D4D4; border-color: #D4D4D4; cursor: default; }
+.btn-next:disabled:hover { background: #D4D4D4; }
+
 /* ── Mobile overrides ───────────────────────────────────────── */
 @media (hover: none) and (pointer: coarse) {
   body { align-items: flex-start; padding: 0; background: #fff; }
