@@ -18,14 +18,16 @@ Annuities/
 │   ├── birthdate-step/
 │   ├── name-step/
 │   ├── email-step/
-│   └── phone-step/
+│   ├── phone-step/
+│   └── otp-step/
 └── v2/                   ← V2 funnel: keyboard slides independently, CTA stays pinned
     ├── state-step/
     ├── zip-step/
     ├── birthdate-step/
     ├── name-step/
     ├── email-step/
-    └── phone-step/
+    ├── phone-step/
+    └── otp-step/
 ```
 
 ---
@@ -53,7 +55,7 @@ Then open:
 Both versions follow the same linear flow:
 
 ```
-state-step → zip-step → birthdate-step → name-step → email-step → phone-step
+state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
 ```
 
 ---
@@ -101,6 +103,7 @@ All utilities live on `window.EDS`:
 | name-step | QWERTY | 5% | `top-group` + security row |
 | email-step | QWERTY | 10% | `top-group` + security row + legal text |
 | phone-step | iOS phone pad | 20% | `EDS.formatPhone`, 10-digit validation, legal text |
+| otp-step | iOS phone pad | 30% | 6-digit OTP boxes, 30s resend timer, phone number masked from `sessionStorage`, CTA: "Get my report" |
 
 ---
 
