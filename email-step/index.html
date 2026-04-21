@@ -33,7 +33,13 @@
       from { transform: translateX(0);     opacity: 1; }
       to   { transform: translateX(-100%); opacity: 0; }
     }
-    .phone.is-leaving {
+    .phone-inner {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100%;
+    }
+    .phone-inner.is-leaving {
       animation: slideOutToLeft 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
       pointer-events: none;
     }
@@ -459,6 +465,7 @@
 <body>
 
   <div class="phone">
+  <div class="phone-inner">
 
     <!-- STATUS BAR -->
     <div class="status-bar">
@@ -637,6 +644,7 @@
       </div><!-- /keyboard -->
     </div><!-- /bottom-wrapper -->
 
+  </div><!-- /phone-inner -->
   </div><!-- /phone -->
 
   <script>
@@ -696,7 +704,7 @@
       } else {
         inputWrapper.classList.remove('is-destructive');
         hintText.classList.remove('visible');
-        document.querySelector('.phone').classList.add('is-leaving');
+        document.querySelector('.phone-inner').classList.add('is-leaving');
         setTimeout(() => { window.location.href = '../phone-step/'; }, 300);
       }
     });

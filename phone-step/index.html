@@ -58,6 +58,12 @@
       overflow: hidden;
       box-shadow: 0 24px 64px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
       position: relative;
+    }
+    .phone-inner {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100%;
       animation: slideInFromRight 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
 
@@ -436,6 +442,7 @@
 <body>
 
   <div class="phone">
+  <div class="phone-inner">
 
     <!-- STATUS BAR -->
     <div class="status-bar">
@@ -570,7 +577,8 @@
       </div>
     </div>
 
-  </div>
+  </div><!-- /phone-inner -->
+  </div><!-- /phone -->
 
   <script>
     const phoneInput   = document.getElementById('phoneInput');
