@@ -13,6 +13,7 @@ Annuities/
 ├── fonts/                ← Hauss and Portada font files
 ├── index.html            ← Entry point / flow selector
 ├── v1/                   ← V1 funnel: keyboard slides up with the footer
+│   ├── goals-step/
 │   ├── state-step/
 │   ├── zip-step/
 │   ├── birthdate-step/
@@ -21,6 +22,7 @@ Annuities/
 │   ├── phone-step/
 │   └── otp-step/
 └── v2/                   ← V2 funnel: keyboard slides independently, CTA stays pinned
+    ├── goals-step/
     ├── state-step/
     ├── zip-step/
     ├── birthdate-step/
@@ -45,8 +47,8 @@ npx serve .
 ```
 
 Then open:
-- `http://localhost:3000/v1/state-step/` — V1 funnel
-- `http://localhost:3000/v2/state-step/` — V2 funnel
+- `http://localhost:3000/v1/goals-step/` — V1 funnel
+- `http://localhost:3000/v2/goals-step/` — V2 funnel
 
 ---
 
@@ -55,7 +57,7 @@ Then open:
 Both versions follow the same linear flow:
 
 ```
-state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
+goals-step → state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
 ```
 
 ---
@@ -97,6 +99,7 @@ All utilities live on `window.EDS`:
 
 | Screen | Keyboard | Progress | Notes |
 |---|---|---|---|
+| goals-step | None (card selection) | 10% | 3 selectable goal cards, auto-advances on tap, no footer/CTA |
 | state-step | None (dropdown) | 2% | `EDS.initDropdown` for 50 US states |
 | zip-step | Numeric (V1) / iOS (V2) | 4% | 5-digit validation |
 | birthdate-step | iOS phone pad | 6% | `EDS.formatDate`, heading + subtext |
