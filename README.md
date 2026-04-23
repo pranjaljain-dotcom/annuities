@@ -1,6 +1,8 @@
-# Ethos Annuities — Mobile Funnel Prototype
+# Ethos Annuities — LP Report Preview
 
-Static HTML prototype of the Ethos annuities onboarding funnel. Designed for 375×812 (iPhone 14 viewport), viewed in a browser at desktop size with a simulated phone frame.
+Static HTML landing page prototype for the Ethos annuities product. Features an interactive mobile phone shell previewing annuity report cards across three product categories.
+
+**GitHub Pages:** https://pranjaljain-dotcom.github.io/annuities-lp-report-preview/
 
 ---
 
@@ -8,115 +10,27 @@ Static HTML prototype of the Ethos annuities onboarding funnel. Designed for 375
 
 ```
 Annuities/
-├── components.css        ← All shared CSS (fonts, layout, inputs, keyboards, footer)
-├── components.js         ← All shared JS (window.EDS namespace)
-├── fonts/                ← Hauss and Portada font files
-├── index.html            ← Entry point / flow selector
-├── v1/                   ← V1 funnel: keyboard slides up with the footer
-│   ├── goals-step/
-│   ├── state-step/
-│   ├── zip-step/
-│   ├── birthdate-step/
-│   ├── name-step/
-│   ├── email-step/
-│   ├── phone-step/
-│   └── otp-step/
-└── v2/                   ← V2 funnel: keyboard slides independently, CTA stays pinned
-    ├── goals-step/
-    ├── state-step/
-    ├── zip-step/
-    ├── birthdate-step/
-    ├── name-step/
-    ├── email-step/
-    ├── phone-step/
-    └── otp-step/
+└── index.html    ← Full landing page (self-contained, all CSS/JS inline)
 ```
 
 ---
 
-## Viewing the Prototype
+## Features
 
-Serve the project from a local static server (required for font loading):
-
-```bash
-# Python
-python3 -m http.server 3000
-
-# Node
-npx serve .
-```
-
-Then open:
-- `http://localhost:3000/v1/goals-step/` — V1 funnel
-- `http://localhost:3000/v2/goals-step/` — V2 funnel
+- **Interactive phone shell** — animated float cards showing annuity products
+- **Three product tabs** — Instant Income, Safe Growth, Market Growth
+- **Mobile-responsive tab bar** — horizontally scrollable at narrow viewports (320px+)
+- **"How it works" section** — animated step cards with progress stroke
+- **Trust & social proof sections** — carrier logos, stats, testimonials
 
 ---
 
-## Screen Flow
+## Viewing
 
-Both versions follow the same linear flow:
-
-```
-goals-step → state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
-```
+Open `index.html` directly in a browser — no server required (all assets are inline or embedded).
 
 ---
 
-## V1 vs V2
+## Related
 
-| | V1 | V2 |
-|---|---|---|
-| **Keyboard** | Slides up with the footer as one unit | Slides up independently, over the CTA |
-| **CTA** | Moves up with keyboard | Always pinned at bottom |
-| **Keyboard container** | `.bottom-wrapper` (inside `slide-inner`) | `.keyboard-wrapper` (outside `slide-container`) |
-| **CTA container** | `.bottom-wrapper` | `.bottom-wrapper--v2` |
-| **JS init** | `EDS.initV1Keyboard(...)` | `EDS.initV2Keyboard(...)` |
-| **Auto-focus** | Manual — `EDS.autoFocus(input)` | Built into `initV2Keyboard` |
-
----
-
-## Shared Components (`components.js`)
-
-All utilities live on `window.EDS`:
-
-| Function | Description |
-|---|---|
-| `EDS.navigate(url)` | Slide-out animation then navigate |
-| `EDS.buildQwertyKeyboard(el)` | Renders QWERTY keyboard into element |
-| `EDS.buildIosKeyboard(el)` | Renders iOS phone pad (3×4, letter subtexts) |
-| `EDS.buildNumericKeyboard(el)` | Renders plain numeric grid |
-| `EDS.initV1Keyboard(input, wrapper, kb, onKey)` | V1 keyboard behavior |
-| `EDS.initV2Keyboard(input, kbWrapper, footer, onKey)` | V2 keyboard behavior |
-| `EDS.formatDate(digits)` | `"12312000"` → `"12/31/2000"` |
-| `EDS.formatPhone(digits)` | `"4155551234"` → `"(415) 555-1234"` |
-| `EDS.autoFocus(input, delay?)` | Focus input after optional delay |
-| `EDS.initDropdown(config)` | Custom select dropdown — returns `{ getValue, showError }` |
-| `EDS.initMobileFooter(wrapper)` | Sticky footer via `visualViewport` on real mobile |
-
----
-
-## Per-Screen Reference
-
-| Screen | Keyboard | Progress | Notes |
-|---|---|---|---|
-| goals-step | None (card selection) | 10% | 3 selectable goal cards, auto-advances on tap, no footer/CTA |
-| state-step | None (dropdown) | 2% | `EDS.initDropdown` for 50 US states |
-| zip-step | Numeric (V1) / iOS (V2) | 4% | 5-digit validation |
-| birthdate-step | iOS phone pad | 6% | `EDS.formatDate`, heading + subtext |
-| name-step | QWERTY | 5% | `top-group` + security row |
-| email-step | QWERTY | 10% | `top-group` + security row + legal text |
-| phone-step | iOS phone pad | 20% | `EDS.formatPhone`, 10-digit validation, legal text |
-| otp-step | iOS phone pad | 30% | 6-digit OTP boxes, 30s resend timer, phone number masked from `sessionStorage`, CTA: "Get my report" |
-
----
-
-## Adding a New Screen
-
-1. Create `v1/your-step/index.html` and `v2/your-step/index.html`
-2. Reference shared files with `../../components.css` and `../../components.js`
-3. Add only the progress width inline: `<style>.progress__fill { width: X%; }</style>`
-4. Copy the status bar and nav HTML from any existing screen (never changes)
-5. Use the appropriate keyboard builder and init function for the input type
-6. Navigate with `EDS.navigate('../next-step/')`
-
-See `CLAUDE.md` for full boilerplate and detailed per-screen specs.
+- **Annuities Funnel:** https://github.com/pranjaljain-dotcom/annuities-funnel
