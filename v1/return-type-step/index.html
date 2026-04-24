@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annuities – What type of return?</title>
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    .progress__fill { width: 15%; }
+
+    .rt-cards { display: flex; flex-direction: column; gap: 12px; }
+
+    .rt-card {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 16px;
+      background: #F3F7F7;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .rt-card.is-selected { background: #E4EEEE; border-color: #056257; }
+
+    .rt-card__icon {
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .rt-card__text { flex: 1; padding-top: 2px; }
+
+    .rt-card__heading {
+      font-family: 'Hauss', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.5;
+      color: #272727;
+    }
+
+    .rt-card__sub {
+      font-family: 'Hauss', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: #8c8c8c;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+
+    <div class="status-bar">
+      <span class="status-bar__time">9:41</span>
+      <div class="status-bar__island"></div>
+      <div class="status-bar__icons">
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="1" fill="#000"/><rect x="4.5" y="5" width="3" height="7" rx="1" fill="#000"/><rect x="9" y="3" width="3" height="9" rx="1" fill="#000"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="#000"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><circle cx="8" cy="11" r="1.2" fill="#000"/><path d="M5.2 8.2C6.0 7.4 7.0 7 8 7s2 .4 2.8 1.2" stroke="#000" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M2.8 5.8C4.3 4.3 6.0 3.5 8 3.5s3.7.8 5.2 2.3" stroke="#000" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M0.4 3.4C2.4 1.3 5.1 0 8 0s5.6 1.3 7.6 3.4" stroke="#000" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+        <svg width="25" height="13" viewBox="0 0 25 13" fill="none"><rect x="0.5" y="0.5" width="21" height="12" rx="3.5" stroke="#000" stroke-opacity="0.35"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#000"/><path d="M23 4.5v4c.83-.5 1.5-1.2 1.5-2s-.67-1.5-1.5-2z" fill="#000" opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="nav__back" aria-label="Go back" onclick="history.back()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="#525252"/></svg>
+      </button>
+      <div class="nav__logo">
+        <svg width="72" height="16" viewBox="0 0 72 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6888 1.78708V3.85791H18.8313V14.2134H20.9022V3.85791H25.0443V1.78708H14.6888ZM1.59998 1.78708V14.2134H10.7704V12.1421H3.67081V9.03563H9.83949V6.9648H3.67081V3.85791H10.7704V1.78708H1.59998ZM37.4707 1.78708V6.9648H31.2578V1.78708H29.1865V14.2134H31.2578V9.03563H37.4707V14.2134H39.5415V1.78708H37.4707ZM55.3898 2.95879C54.9697 2.53866 54.4709 2.20539 53.922 1.97801C53.3731 1.75063 52.7848 1.63361 52.1906 1.63361C51.5965 1.63361 51.0081 1.75063 50.4592 1.97801C49.9103 2.20539 49.4115 2.53866 48.9914 2.95879C48.7361 3.21451 48.2042 3.81231 48.0226 4.10675C48.8865 3.5735 49.9049 3.3467 50.9134 3.46293C51.922 3.57916 52.8621 4.03163 53.5821 4.74741C54.3021 5.4632 54.7601 6.40058 54.8823 7.40847C55.0044 8.41635 54.7836 9.43601 54.2555 10.3031L54.3253 10.2333C54.6282 10.0495 55.1282 9.6189 55.3898 9.35723C55.81 8.93711 56.1432 8.43834 56.3706 7.88942C56.598 7.3405 56.715 6.75216 56.715 6.15801C56.715 5.56386 56.598 4.97552 56.3706 4.4266C56.1432 3.87768 55.81 3.37891 55.3898 2.95879Z" fill="#056257"/><path d="M47.7197 10.6291C45.942 8.85147 44.8532 5.58162 46.8594 2.12498L45.9216 3.06275C44.6798 4.30456 43.9823 5.98879 43.9823 7.74494C43.9823 9.50108 44.68 11.1853 45.9218 12.427C47.1636 13.6688 48.8479 14.3664 50.604 14.3663C52.3601 14.3663 54.0443 13.6686 55.2861 12.4268L56.2239 11.4891C52.9319 13.4029 49.6561 12.5655 47.7197 10.6291ZM65.5768 14.4C68.585 14.4 70.5286 12.9095 70.5286 10.6026C70.5286 8.43967 69.0083 7.65735 66.555 7.09741L65.0522 6.76766C63.6991 6.46854 62.9656 6.12092 62.9656 5.14061C62.9656 4.14114 63.897 3.4954 65.3385 3.4954C66.6835 3.4954 67.8672 3.99492 68.5965 4.86844L70.1571 3.61397C69.2981 2.68499 67.7825 1.60001 65.3934 1.60001C62.6941 1.60001 60.7348 3.13516 60.7348 5.25067C60.7348 7.66487 62.7112 8.40181 64.4331 8.77411L66.101 9.14087C67.4196 9.42722 68.2978 9.81995 68.2978 10.8041C68.2978 11.8618 67.346 12.4677 65.687 12.4677C63.8774 12.4677 62.5095 11.5789 61.9363 10.6828L60.2238 11.9159C61.1058 13.1247 62.9639 14.4 65.5768 14.4Z" fill="#056257"/></svg>
+      </div>
+      <a class="nav__help" href="tel:4152759050">
+        <span class="nav__help-label">Need help?</span>
+        <span class="nav__help-number">(415) 275-9050</span>
+      </a>
+    </div>
+
+    <div class="progress">
+      <div class="progress__track"><div class="progress__fill"></div></div>
+    </div>
+
+    <div class="slide-container">
+    <div class="slide-inner" id="slideInner">
+
+    <div class="content">
+      <div class="question-and-input">
+        <p class="heading">What type of return do you prefer?</p>
+
+        <div class="rt-cards" id="rtCards">
+
+          <div class="rt-card" data-value="fixed">
+            <div class="rt-card__icon">
+              <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip-sc-v1)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.4232 8.06777C30.5593 7.49371 29.4396 7.49371 28.5756 8.06777C23.0226 11.7111 16.5374 13.6208 9.95563 13.6038C9.37588 13.6038 8.90413 14.0585 8.90413 14.6382V27.9666C8.90413 40.488 17.7367 51.2075 29.9056 53.6857H30.1159C42.2735 51.2075 51.1004 40.4936 51.1004 27.9837V14.6609C51.1004 14.0812 50.623 13.6265 50.0432 13.6265C43.4614 13.6492 36.9762 11.7338 31.4289 8.06777H31.4232Z" stroke="#05594F" stroke-width="1.98932" stroke-linecap="round"/>
+<path d="M31.4232 8.06777C30.5593 7.49371 29.4396 7.49371 28.5756 8.06777C23.0226 11.7111 16.5374 13.6208 9.95563 13.6038C9.37588 13.6038 8.90413 14.0585 8.90413 14.6382V27.9666C8.90413 40.488 17.7367 51.2075 29.9056 53.6857H30.1159C42.2735 51.2075 51.1004 40.4936 51.1004 27.9837V14.6609C51.1004 14.0812 50.623 13.6265 50.0432 13.6265C43.4614 13.6492 36.9762 11.7338 31.4289 8.06777H31.4232Z" stroke="#05594F" stroke-width="1.98932" stroke-linecap="round"/>
+<path d="M27.8386 2.17934L28.7409 1.45182C29.4684 0.855026 30.5142 0.849343 31.2418 1.43477L32.1682 2.17934C38.3067 7.10716 46.173 9.23858 53.8859 8.14729C55.1647 7.96541 56.3015 8.96575 56.3015 10.256V27.9893C56.3015 43.3753 45.1727 56.4877 30.0084 58.9999C14.8384 56.4877 3.69824 43.3639 3.69824 27.9666V10.2389C3.69824 8.95438 4.82931 7.94836 6.10247 8.12455C13.9802 9.21584 22.0113 6.98212 28.218 1.87241L27.8386 2.17934Z" stroke="#05594F" stroke-width="1.98932" stroke-linecap="round"/>
+<path d="M38.8746 30.9903C38.9201 35.8443 35.0438 39.8627 30.1387 40.1525C25.0858 40.4481 20.8287 36.4865 20.5274 31.4337C20.2319 26.3808 24.1935 22.1236 29.2463 21.8224C31.1276 21.7258 32.9123 22.2203 34.3958 23.1126" stroke="#05594F" stroke-width="1.98932" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M25.0174 29.9786L29.6951 34.6564L41.3355 21.1347" stroke="#05594F" stroke-width="1.98932" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs><clipPath id="clip-sc-v1"><rect width="60" height="60" fill="white"/></clipPath></defs>
+</svg>
+            </div>
+            <div class="rt-card__text">
+              <p class="rt-card__heading">Fixed rate</p>
+              <p class="rt-card__sub">Guaranteed interest rate and no market exposure</p>
+            </div>
+          </div>
+
+          <div class="rt-card" data-value="index">
+            <div class="rt-card__icon">
+              <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M46.6917 27.507H1.28787C1.21459 27.507 1.15518 27.5664 1.15518 27.6397V56.6589C1.15518 56.7321 1.21459 56.7917 1.28787 56.7917H46.6917C46.765 56.7917 46.8244 56.7321 46.8244 56.6589V27.6397C46.8244 27.5664 46.765 27.507 46.6917 27.507Z" stroke="#04594F" stroke-width="2.01923"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.5263 31.5972C39.5263 31.5972 39.5147 31.5742 39.4974 31.5742H8.47628C8.47628 31.5742 8.45321 31.5857 8.44744 31.5972C8.25128 33.253 6.95321 34.5684 5.30898 34.7934C5.29744 34.7934 5.2859 34.8049 5.2859 34.8165V49.4761C5.2859 49.4761 5.29744 49.4992 5.30898 49.4992C6.95898 49.7242 8.25705 51.0396 8.44744 52.6953C8.44744 52.7069 8.45897 52.7184 8.47628 52.7184H39.4974C39.4974 52.7184 39.5205 52.7069 39.5263 52.6953C39.7224 51.0338 41.0321 49.7068 42.6878 49.4934C42.6994 49.4934 42.7109 49.4818 42.7109 49.4645V34.8107C42.7109 34.8107 42.6994 34.7876 42.6878 34.7818C41.0321 34.5684 39.7224 33.2473 39.5263 31.5857V31.5972Z" stroke="#04594F" stroke-width="2.01923"/>
+<path d="M24.0003 48.126C27.3013 48.126 29.9773 45.45 29.9773 42.149C29.9773 38.8481 27.3013 36.1721 24.0003 36.1721C20.6994 36.1721 18.0234 38.8481 18.0234 42.149C18.0234 45.45 20.6994 48.126 24.0003 48.126Z" stroke="#04594F" stroke-width="2.01923"/>
+<path d="M36.3184 56.7916H52.3684V20.555H57.9069C58.7031 20.555 59.1358 19.6319 58.6281 19.0204L46.0627 4.00881C45.1684 2.9415 43.5242 2.9415 42.6242 4.00881L30.0646 19.0204C29.5569 19.6319 29.9896 20.555 30.78 20.555H36.3184V27.5069" stroke="#04594F" stroke-width="2.01923" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+            </div>
+            <div class="rt-card__text">
+              <p class="rt-card__heading">Index-linked</p>
+              <p class="rt-card__sub">Tied to market performance (e.g., S&amp;P 500), with loss protection</p>
+            </div>
+          </div>
+
+          <div class="rt-card" data-value="unsure">
+            <div class="rt-card__icon">
+              <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip-lb-v1)">
+<path d="M21.4808 43.2559H38.527V51.5776C38.527 52.7055 38.0666 53.6148 37.4969 53.6148H22.511C21.9412 53.6148 21.4808 52.7055 21.4808 51.5776V43.2559Z" stroke="#05594F" stroke-width="2.01923"/>
+<path d="M23.8972 53.6148H36.1783C36.1783 56.5038 33.8361 58.8461 30.9471 58.8461H29.1285C26.2395 58.8461 23.8972 56.5038 23.8972 53.6148Z" stroke="#05594F" stroke-width="2.01923"/>
+<path d="M26.9479 42.3464V23.2687C26.9479 21.8818 25.8256 20.7595 24.4329 20.7595C23.046 20.7595 21.918 21.8818 21.918 23.2687C21.918 24.6557 23.0402 25.7837 24.4329 25.7837H31.5979" stroke="#05594F" stroke-width="2.01923"/>
+<path d="M33.1052 42.3464V23.2687C33.1052 21.8818 34.2274 20.7595 35.6201 20.7595C37.007 20.7595 38.1292 21.8818 38.1292 23.2687C38.1292 24.6557 37.007 25.7837 35.6201 25.7837H28.4551" stroke="#05594F" stroke-width="2.01923"/>
+<path d="M38.4349 43.2558C38.6593 39.659 39.5053 37.1556 41.8016 34.0479L41.8821 33.9385C42.4519 33.1904 43.0274 32.448 43.6547 31.7517C46.8314 28.2124 48.6557 23.43 48.3047 18.2217C47.6889 9.1634 40.3571 1.82002 31.2987 1.19848C20.5772 0.461844 11.6513 8.93894 11.6513 19.4993C11.6513 24.1723 13.4008 28.4368 16.2783 31.6768C16.9458 32.4307 17.5789 33.2134 18.1717 34.0248L18.2062 34.0709C20.4334 37.121 21.2621 39.6014 21.4808 43.1522" stroke="#05594F" stroke-width="2.01923" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs><clipPath id="clip-lb-v1"><rect width="59.9999" height="59.9999" fill="white"/></clipPath></defs>
+</svg>
+            </div>
+            <div class="rt-card__text">
+              <p class="rt-card__heading">Not sure</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="spacer"></div>
+    </div>
+
+    </div></div>
+
+  </div>
+
+  <script src="../../components.js"></script>
+  <script>
+    var cards = document.querySelectorAll('.rt-card');
+
+    cards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        cards.forEach(function(c) { c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+
+        setTimeout(function() {
+          var goal = sessionStorage.getItem('annuities_goal');
+          if (goal === 'retirement') {
+            EDS.navigate('../income-age-step/');
+          } else if (goal === 'wealth') {
+            EDS.navigate('../growth-period-step/');
+          } else {
+            EDS.navigate('../dependents-step/');
+          }
+        }, 300);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -148,8 +148,9 @@
         cards.forEach(function(c) { c.classList.remove('is-selected'); });
         card.classList.add('is-selected');
 
+        sessionStorage.setItem('annuities_goal', card.dataset.value);
         setTimeout(function() {
-          EDS.navigate('../dependents-step/');
+          EDS.navigate('../familiarity-step/');
         }, 300);
       });
     });

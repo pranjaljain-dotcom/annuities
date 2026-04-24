@@ -69,23 +69,37 @@ Annuities/
 ├── components.js         ← all shared JS (window.EDS namespace)
 ├── fonts/
 ├── v1/                   ← V1 funnel (keyboard slides with footer as one unit)
+│   ├── goals-step/
+│   ├── familiarity-step/
+│   ├── return-type-step/
+│   ├── income-age-step/
+│   ├── growth-period-step/
+│   ├── dependents-step/
 │   ├── state-step/
 │   ├── zip-step/
 │   ├── birthdate-step/
 │   ├── name-step/
 │   ├── email-step/
-│   └── phone-step/
+│   ├── phone-step/
+│   └── otp-step/
 └── v2/                   ← V2 funnel (keyboard slides independently, CTA never moves)
+    ├── goals-step/
+    ├── familiarity-step/
+    ├── return-type-step/
+    ├── income-age-step/
+    ├── growth-period-step/
+    ├── dependents-step/
     ├── state-step/
     ├── zip-step/
     ├── birthdate-step/
     ├── name-step/
     ├── email-step/
-    └── phone-step/
+    ├── phone-step/
+    └── otp-step/
 ```
 
 ### Navigation flow (both versions)
-`state-step` → `zip-step` → `birthdate-step` → `name-step` → `email-step` → `phone-step`
+`goals-step` → `familiarity-step` → `return-type-step` → `[income-age-step OR growth-period-step]` → `dependents-step` → `state-step` → `zip-step` → `birthdate-step` → `name-step` → `email-step` → `phone-step` → `otp-step`
 
 All navigation uses `EDS.navigate('../next-step/')` (relative, same-version folder).
 
@@ -204,6 +218,35 @@ EDS.initMobileFooter(bottomWrapper)  // activates visualViewport sticky footer o
 ---
 
 ## HTML Prototype — Per-Screen Reference
+
+### goals-step (card selection — no keyboard)
+- 3 tap-to-advance cards: Guaranteed retirement income (`retirement`), Build wealth tax deferred (`wealth`), I'm not sure yet (`unsure`)
+- Saves selection to `sessionStorage.setItem('annuities_goal', value)` on tap
+- Auto-advances to `../familiarity-step/` after 300ms
+- No footer/CTA
+
+### familiarity-step (card selection — no keyboard)
+- 3 tap-to-advance cards: "I'm just starting to learn", "I know the basics", "I'm very familiar"
+- Auto-advances to `../return-type-step/` after 300ms
+- No footer/CTA
+
+### return-type-step (card selection — no keyboard)
+- 3 icon cards (icon left 40×40 + text right): Fixed rate (Shield Check icon), Index-linked (Financial Growth icon), Not sure (Lightbulb icon)
+- Conditional navigation: reads `sessionStorage.getItem('annuities_goal')` → `retirement` → `../income-age-step/`; `wealth` → `../growth-period-step/`; else → `../dependents-step/`
+- Auto-advances after 300ms
+- No footer/CTA
+
+### income-age-step (dropdown — no keyboard)
+- Shown when goal=`retirement`
+- Input: `EDS.initDropdown`, label "Age", placeholder "Select an age", options 55–85 years old
+- V1: uses `bottom-wrapper`; V2: uses `bottom-wrapper--v2`
+- Navigates to `../dependents-step/`
+
+### growth-period-step (card selection — no keyboard)
+- Shown when goal=`wealth`
+- 2×2 grid of 4 cards: 3 Years, 5 Years, 7 Years, 10 Years
+- Auto-advances to `../dependents-step/` after 300ms
+- No footer/CTA
 
 ### state-step (dropdown — no keyboard)
 - Input: custom EDS dropdown (`EDS.initDropdown`)

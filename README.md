@@ -14,6 +14,10 @@ Annuities/
 ├── index.html            ← Entry point / flow selector
 ├── v1/                   ← V1 funnel: keyboard slides up with the footer
 │   ├── goals-step/
+│   ├── familiarity-step/
+│   ├── return-type-step/
+│   ├── income-age-step/
+│   ├── growth-period-step/
 │   ├── dependents-step/
 │   ├── state-step/
 │   ├── zip-step/
@@ -24,6 +28,10 @@ Annuities/
 │   └── otp-step/
 └── v2/                   ← V2 funnel: keyboard slides independently, CTA stays pinned
     ├── goals-step/
+    ├── familiarity-step/
+    ├── return-type-step/
+    ├── income-age-step/
+    ├── growth-period-step/
     ├── dependents-step/
     ├── state-step/
     ├── zip-step/
@@ -59,8 +67,10 @@ Then open:
 Both versions follow the same linear flow:
 
 ```
-goals-step → dependents-step → state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
+goals-step → familiarity-step → return-type-step → [income-age-step OR growth-period-step] → dependents-step → state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
 ```
+
+Branch at return-type-step: goal=`retirement` → income-age-step; goal=`wealth` → growth-period-step; else → dependents-step.
 
 ---
 
@@ -101,7 +111,11 @@ All utilities live on `window.EDS`:
 
 | Screen | Keyboard | Progress | Notes |
 |---|---|---|---|
-| goals-step | None (card selection) | 10% | 3 selectable goal cards, auto-advances on tap, no footer/CTA |
+| goals-step | None (card selection) | 10% | 3 selectable goal cards, auto-advances on tap, saves `annuities_goal` to sessionStorage |
+| familiarity-step | None (card selection) | 12% | 3 tap-to-advance cards, auto-advances to return-type-step |
+| return-type-step | None (card selection) | 15% | 3 icon cards (Fixed rate / Index-linked / Not sure), branches on `annuities_goal` |
+| income-age-step | None (dropdown) | 18% | `EDS.initDropdown`, ages 55–85; shown when goal=retirement |
+| growth-period-step | None (card selection) | 18% | 2×2 grid: 3/5/7/10 Years; shown when goal=wealth |
 | dependents-step | None (multi-select cards) | 35% | EDS Checkbox card item; 4 options, ≥1 required to advance |
 | state-step | None (dropdown) | 2% | `EDS.initDropdown` for 50 US states |
 | zip-step | Numeric (V1) / iOS (V2) | 4% | 5-digit validation |

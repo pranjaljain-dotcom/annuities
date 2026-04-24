@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annuities – How familiar are you?</title>
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    .progress__fill { width: 12%; }
+
+    .fam-cards { display: flex; flex-direction: column; gap: 12px; }
+
+    .fam-card {
+      display: flex; align-items: center;
+      padding: 18px 20px;
+      background: #F3F7F7;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fam-card.is-selected { background: #E4EEEE; border-color: #056257; }
+
+    .fam-card__label {
+      font-family: 'Hauss', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.5;
+      color: #272727;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+
+    <div class="status-bar">
+      <span class="status-bar__time">9:41</span>
+      <div class="status-bar__island"></div>
+      <div class="status-bar__icons">
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="1" fill="#000"/><rect x="4.5" y="5" width="3" height="7" rx="1" fill="#000"/><rect x="9" y="3" width="3" height="9" rx="1" fill="#000"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="#000"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><circle cx="8" cy="11" r="1.2" fill="#000"/><path d="M5.2 8.2C6.0 7.4 7.0 7 8 7s2 .4 2.8 1.2" stroke="#000" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M2.8 5.8C4.3 4.3 6.0 3.5 8 3.5s3.7.8 5.2 2.3" stroke="#000" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M0.4 3.4C2.4 1.3 5.1 0 8 0s5.6 1.3 7.6 3.4" stroke="#000" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+        <svg width="25" height="13" viewBox="0 0 25 13" fill="none"><rect x="0.5" y="0.5" width="21" height="12" rx="3.5" stroke="#000" stroke-opacity="0.35"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#000"/><path d="M23 4.5v4c.83-.5 1.5-1.2 1.5-2s-.67-1.5-1.5-2z" fill="#000" opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="nav__back" aria-label="Go back" onclick="history.back()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="#525252"/></svg>
+      </button>
+      <div class="nav__logo">
+        <svg width="72" height="16" viewBox="0 0 72 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6888 1.78708V3.85791H18.8313V14.2134H20.9022V3.85791H25.0443V1.78708H14.6888ZM1.59998 1.78708V14.2134H10.7704V12.1421H3.67081V9.03563H9.83949V6.9648H3.67081V3.85791H10.7704V1.78708H1.59998ZM37.4707 1.78708V6.9648H31.2578V1.78708H29.1865V14.2134H31.2578V9.03563H37.4707V14.2134H39.5415V1.78708H37.4707ZM55.3898 2.95879C54.9697 2.53866 54.4709 2.20539 53.922 1.97801C53.3731 1.75063 52.7848 1.63361 52.1906 1.63361C51.5965 1.63361 51.0081 1.75063 50.4592 1.97801C49.9103 2.20539 49.4115 2.53866 48.9914 2.95879C48.7361 3.21451 48.2042 3.81231 48.0226 4.10675C48.8865 3.5735 49.9049 3.3467 50.9134 3.46293C51.922 3.57916 52.8621 4.03163 53.5821 4.74741C54.3021 5.4632 54.7601 6.40058 54.8823 7.40847C55.0044 8.41635 54.7836 9.43601 54.2555 10.3031L54.3253 10.2333C54.6282 10.0495 55.1282 9.6189 55.3898 9.35723C55.81 8.93711 56.1432 8.43834 56.3706 7.88942C56.598 7.3405 56.715 6.75216 56.715 6.15801C56.715 5.56386 56.598 4.97552 56.3706 4.4266C56.1432 3.87768 55.81 3.37891 55.3898 2.95879Z" fill="#056257"/><path d="M47.7197 10.6291C45.942 8.85147 44.8532 5.58162 46.8594 2.12498L45.9216 3.06275C44.6798 4.30456 43.9823 5.98879 43.9823 7.74494C43.9823 9.50108 44.68 11.1853 45.9218 12.427C47.1636 13.6688 48.8479 14.3664 50.604 14.3663C52.3601 14.3663 54.0443 13.6686 55.2861 12.4268L56.2239 11.4891C52.9319 13.4029 49.6561 12.5655 47.7197 10.6291ZM65.5768 14.4C68.585 14.4 70.5286 12.9095 70.5286 10.6026C70.5286 8.43967 69.0083 7.65735 66.555 7.09741L65.0522 6.76766C63.6991 6.46854 62.9656 6.12092 62.9656 5.14061C62.9656 4.14114 63.897 3.4954 65.3385 3.4954C66.6835 3.4954 67.8672 3.99492 68.5965 4.86844L70.1571 3.61397C69.2981 2.68499 67.7825 1.60001 65.3934 1.60001C62.6941 1.60001 60.7348 3.13516 60.7348 5.25067C60.7348 7.66487 62.7112 8.40181 64.4331 8.77411L66.101 9.14087C67.4196 9.42722 68.2978 9.81995 68.2978 10.8041C68.2978 11.8618 67.346 12.4677 65.687 12.4677C63.8774 12.4677 62.5095 11.5789 61.9363 10.6828L60.2238 11.9159C61.1058 13.1247 62.9639 14.4 65.5768 14.4Z" fill="#056257"/></svg>
+      </div>
+      <a class="nav__help" href="tel:4152759050">
+        <span class="nav__help-label">Need help?</span>
+        <span class="nav__help-number">(415) 275-9050</span>
+      </a>
+    </div>
+
+    <div class="progress">
+      <div class="progress__track"><div class="progress__fill"></div></div>
+    </div>
+
+    <div class="slide-container">
+    <div class="slide-inner" id="slideInner">
+
+    <div class="content">
+      <div class="question-and-input">
+        <p class="heading">How familiar are you with annuities?</p>
+
+        <div class="fam-cards" id="famCards">
+
+          <div class="fam-card" data-value="beginner">
+            <span class="fam-card__label">I&rsquo;m just starting to learn</span>
+          </div>
+
+          <div class="fam-card" data-value="basics">
+            <span class="fam-card__label">I know the basics</span>
+          </div>
+
+          <div class="fam-card" data-value="expert">
+            <span class="fam-card__label">I&rsquo;m very familiar</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="spacer"></div>
+    </div>
+
+    </div></div>
+
+  </div>
+
+  <script src="../../components.js"></script>
+  <script>
+    var cards = document.querySelectorAll('.fam-card');
+
+    cards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        cards.forEach(function(c) { c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+        setTimeout(function() {
+          EDS.navigate('../return-type-step/');
+        }, 300);
+      });
+    });
+  </script>
+</body>
+</html>
