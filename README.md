@@ -14,6 +14,7 @@ Annuities/
 ├── index.html            ← Entry point / flow selector
 ├── v1/                   ← V1 funnel: keyboard slides up with the footer
 │   ├── goals-step/
+│   ├── dependents-step/
 │   ├── state-step/
 │   ├── zip-step/
 │   ├── birthdate-step/
@@ -23,6 +24,7 @@ Annuities/
 │   └── otp-step/
 └── v2/                   ← V2 funnel: keyboard slides independently, CTA stays pinned
     ├── goals-step/
+    ├── dependents-step/
     ├── state-step/
     ├── zip-step/
     ├── birthdate-step/
@@ -57,7 +59,7 @@ Then open:
 Both versions follow the same linear flow:
 
 ```
-goals-step → state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
+goals-step → dependents-step → state-step → zip-step → birthdate-step → name-step → email-step → phone-step → otp-step
 ```
 
 ---
@@ -100,6 +102,7 @@ All utilities live on `window.EDS`:
 | Screen | Keyboard | Progress | Notes |
 |---|---|---|---|
 | goals-step | None (card selection) | 10% | 3 selectable goal cards, auto-advances on tap, no footer/CTA |
+| dependents-step | None (multi-select cards) | 35% | EDS Checkbox card item; 4 options, ≥1 required to advance |
 | state-step | None (dropdown) | 2% | `EDS.initDropdown` for 50 US states |
 | zip-step | Numeric (V1) / iOS (V2) | 4% | 5-digit validation |
 | birthdate-step | iOS phone pad | 6% | `EDS.formatDate`, heading + subtext |

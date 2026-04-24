@@ -39,6 +39,7 @@ Figma file: `https://www.figma.com/design/MDyfWqupmhziMQSWCOmIV4/Ethos-Design-Sy
 | `Modals & Toasts` (component set) | `ac17fac54677d029cf9d20720e4e0a75d85d835f` | Modal dialogs, toast notifications |
 | `EDS.Thumbnail.Avatars` (component set) | `2e0a2130562c6378f42d130ad6db30651199d479` | User avatar / initials |
 | `Carousel arrows` (component set) | `4a70245b2d85e95f51be468c3e5a9b14b358e3c6` | Prev/next carousel controls |
+| `Checkbox card item` (component set) | `08c4104c00e3b3d84c60c3111ddb1ada2eed4a69` | Multi-select cards (e.g. dependents, goals) |
 | `Chart` (component set) | `8cd7bd572258accbaad5175feff2b0bd2ac61623` | Data visualisation |
 | `Security / security_lock_closed` | `ea780ee2ffa6fda6eab3d59d0cc74b0b9abb49a6` | Lock icon for security row |
 | `Arrow / arrow_left_back` | `1592940b2c658f091c7926d6d346e0ebd153d4a2` | Back arrow in nav header |
@@ -158,6 +159,16 @@ Font family: **Portada** (headings/display) · **Hauss** (body/UI)
 ### Progress Bar (`Progress bar` — key `603247f170fd3085b1e2b99b40d7279147fe56c7`)
 - Flush below nav, no extra padding
 - Height: HUG
+
+### Checkbox Card Item (`Checkbox card item` — key `08c4104c00e3b3d84c60c3111ddb1ada2eed4a69`)
+- **Variant used:** `Breakpoint=Mobile, Size=md, Type=Icon simple, State=Default`
+- **Selected node:** `41425:77342` — **Unselected node:** `41425:77624`
+- **Unselected:** `background: #ffffff`, `border: 2px solid #d4d4d4`, `border-radius: 8px`, `padding: 16px`
+- **Selected:** `background: #ffffff` (unchanged), `border-color: #056257`
+- **Gap** between icon box and text: `16px`
+- **Featured icon box:** `40×40px`, `background: #ffffff`, `border: 1px solid #f4f4f4`, `border-radius: 8px`, `box-shadow: 0px 1px 2px 0px rgba(16,24,40,0.05)`
+- **Checkbox indicator:** `22×22px` circle, unselected = white + `2.75px solid #d4d4d4`; selected = filled `#056257` with white checkmark (`18×18` inner)
+- **Never use** `box-shadow` for selected state — use `border-color` change
 
 ### Security Lock (`security_lock_closed` — key `ea780ee2ffa6fda6eab3d59d0cc74b0b9abb49a6`)
 - Used in security row alongside text
