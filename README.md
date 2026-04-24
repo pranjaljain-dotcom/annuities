@@ -50,7 +50,14 @@ Annuities/
 
 ---
 
-## Viewing the Prototype
+## Live Preview (GitHub Pages)
+
+- [V1 funnel](https://pranjaljain-dotcom.github.io/annuities/v1/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/v1/goals-step/`
+- [V2 funnel](https://pranjaljain-dotcom.github.io/annuities/v2/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/v2/goals-step/`
+
+---
+
+## Viewing the Prototype Locally
 
 Serve the project from a local static server (required for font loading):
 
