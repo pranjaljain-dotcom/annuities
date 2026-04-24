@@ -52,8 +52,8 @@ Annuities/
 
 ## Live Preview (GitHub Pages)
 
-- [V1 funnel](https://pranjaljain-dotcom.github.io/annuities/v1/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/v1/goals-step/`
-- [V2 funnel](https://pranjaljain-dotcom.github.io/annuities/v2/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/v2/goals-step/`
+- [V1 funnel](https://pranjaljain-dotcom.github.io/annuities/funnel/v1/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/funnel/v1/goals-step/`
+- [V2 funnel](https://pranjaljain-dotcom.github.io/annuities/funnel/v2/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/funnel/v2/goals-step/`
 
 ---
 
