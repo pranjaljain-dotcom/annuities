@@ -16,6 +16,19 @@ window.EDS = (function () {
     setTimeout(function () { window.location.href = dest; }, 300);
   }
 
+  // When the browser restores a page from its back-forward cache (e.g. the
+  // user hits the nav back button), it can restore this exact page in the
+  // same DOM state it was in right before navigate() ran — mid slide-out,
+  // with .is-leaving still applied. Since that animation uses fill-mode
+  // "both", the restored page shows permanently translated off-screen and
+  // transparent until a manual reload. Strip it on every pageshow (fires
+  // for both fresh loads and bfcache restores) so back navigation works
+  // without requiring a refresh.
+  window.addEventListener('pageshow', function () {
+    var slideInner = document.getElementById('slideInner');
+    if (slideInner) slideInner.classList.remove('is-leaving');
+  });
+
   /* ── Mobile footer pinning (visualViewport) ─────────────── */
   function initMobileFooter(bottomWrapper) {
     if (!isMobile || !window.visualViewport) return;
