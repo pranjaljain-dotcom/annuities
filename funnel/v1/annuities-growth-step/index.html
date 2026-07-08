@@ -23,6 +23,17 @@
     .nav__help-label { color: #e3f8f6; }
     .nav__help-number { color: #fff; }
 
+    /* On an actual phone (not the desktop mockup preview), fill the real
+       device width edge-to-edge instead of showing the fixed 375px frame
+       with gray margins around it. The internal layout is precisely
+       tuned to 375px, so it's uniformly scaled up/down to fit rather
+       than rebuilt with fluid units. */
+    @media (max-width: 480px) {
+      html, body { background: #0b4368; }
+      body { padding: 0; display: block; }
+      .phone { border-radius: 0; box-shadow: none; margin: 0; transform-origin: top left; }
+    }
+
     :root {
       --bright-cypress: #078476;
       --neptune: #0b4368;
@@ -320,6 +331,27 @@
     document.getElementById('btnNext').addEventListener('click', function () {
       EDS.navigate('../dependents-step/');
     });
+
+    (function () {
+      var MOBILE_BREAKPOINT = 480;
+      var DESIGN_WIDTH = 375;
+      var phone = document.querySelector('.phone');
+
+      function fitToViewport() {
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
+          var scale = window.innerWidth / DESIGN_WIDTH;
+          phone.style.transform = 'scale(' + scale + ')';
+          document.body.style.height = (phone.offsetHeight * scale) + 'px';
+        } else {
+          phone.style.transform = '';
+          document.body.style.height = '';
+        }
+      }
+
+      window.addEventListener('resize', fitToViewport);
+      window.addEventListener('orientationchange', fitToViewport);
+      fitToViewport();
+    })();
 
     (function () {
       var yellowPath = document.getElementById('market-path');
