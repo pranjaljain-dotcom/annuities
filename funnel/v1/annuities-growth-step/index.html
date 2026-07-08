@@ -401,18 +401,22 @@
       placeMarker(startPt.x, startPt.y);
       updateFillReveal(0);
 
+      var pendingTimeouts = [];
+      var pendingRafIds = [];
+
       function drawPath(path, length, duration, delay, onFrame) {
-        setTimeout(function () {
+        var timeoutId = setTimeout(function () {
           var start = null;
           function step(now) {
             if (start === null) start = now;
             var progress = Math.min(1, (now - start) / duration);
             path.style.strokeDashoffset = String(length * (1 - progress));
             if (onFrame) onFrame(progress);
-            if (progress < 1) requestAnimationFrame(step);
+            if (progress < 1) pendingRafIds.push(requestAnimationFrame(step));
           }
-          requestAnimationFrame(step);
+          pendingRafIds.push(requestAnimationFrame(step));
         }, delay);
+        pendingTimeouts.push(timeoutId);
       }
 
       var YELLOW_DURATION = 3000;
@@ -421,11 +425,11 @@
 
       drawPath(yellowPath, yellowLength, YELLOW_DURATION, 0);
 
-      setTimeout(function () {
+      pendingTimeouts.push(setTimeout(function () {
         dot.style.opacity = '1';
         badge.style.opacity = '1';
         guideline.style.opacity = '1';
-      }, GREEN_DELAY);
+      }, GREEN_DELAY));
 
       var lastProgress = 0;
       drawPath(greenPath, greenLength, GREEN_DURATION, GREEN_DELAY, function (progress) {
@@ -442,6 +446,26 @@
         updateFillReveal(lastProgress);
         var clamped = Math.min(lastProgress, MARKER_FRACTION);
         var pt = greenPath.getPointAtLength(clamped * greenLength);
+        placeMarker(pt.x, pt.y);
+      });
+
+      // When the browser restores this page from its back-forward cache
+      // (e.g. hitting the nav back button after leaving via Next), RAF
+      // loops and timeouts scheduled before the page was frozen can
+      // resume in a broken state. Skip straight to the finished chart
+      // instead of replaying a broken animation.
+      window.addEventListener('pageshow', function (event) {
+        if (!event.persisted) return;
+        pendingTimeouts.forEach(clearTimeout);
+        pendingRafIds.forEach(cancelAnimationFrame);
+        yellowPath.style.strokeDashoffset = '0';
+        greenPath.style.strokeDashoffset = '0';
+        dot.style.opacity = '1';
+        badge.style.opacity = '1';
+        guideline.style.opacity = '1';
+        lastProgress = 1;
+        updateFillReveal(1);
+        var pt = greenPath.getPointAtLength(MARKER_FRACTION * greenLength);
         placeMarker(pt.x, pt.y);
       });
     })();
