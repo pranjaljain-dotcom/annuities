@@ -149,8 +149,9 @@
         card.classList.add('is-selected');
 
         sessionStorage.setItem('annuities_goal', card.dataset.value);
+        var nextStep = card.dataset.value === 'wealth' ? '../iul-loss-protection-step/' : '../dependents-step/';
         setTimeout(function() {
-          EDS.navigate('../dependents-step/');
+          EDS.navigate(nextStep);
         }, 300);
       });
     });

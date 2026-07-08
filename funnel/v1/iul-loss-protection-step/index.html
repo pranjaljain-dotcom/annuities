@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annuities – Build wealth tax deferred</title>
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    /* This screen's hero content is taller than the standard slide area.
+       Keep the phone frame the same size as every other screen and let
+       this slide scroll internally instead of growing the frame. */
+    .slide-inner { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+    /* The gradient lives on .phone itself (which never scrolls), instead
+       of on the scrolling hero content. That way the header can stay
+       fixed above the scroll area (out of #slideInner) while always
+       showing a perfectly continuous gradient behind it, regardless of
+       scroll position — header and content are both just transparent
+       windows onto the same static backdrop. */
+    .phone { background: linear-gradient(180deg, #0b4368 0%, #078476 33%); }
+    .status-bar, .nav { background: transparent; }
+    .status-bar__time { color: #fff; }
+    .nav__help-label { color: #e3f8f6; }
+    .nav__help-number { color: #fff; }
+
+    :root {
+      --bright-cypress: #078476;
+      --neptune: #0b4368;
+      --bright-clover: #59f8b1;
+      --dark-clover: #28ba8c;
+      --night-100: #272727;
+      --white-cypress: #f5fffe;
+      --light-cypress: #e3f8f6;
+      --highlight-yellow: #e7fd7f;
+      --white: #ffffff;
+    }
+
+    .iul-hero {
+      position: relative;
+      flex-shrink: 0;
+      width: 375px;
+      height: 910px;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    /* ---------- Title block ---------- */
+    .title {
+      position: absolute;
+      top: 32px;
+      left: 16px;
+      width: 343px;
+    }
+    .title h1 {
+      margin: 0 0 16px 0;
+      font-family: 'Portada', serif;
+      font-weight: 600;
+      font-size: 33px;
+      line-height: 40px;
+      letter-spacing: -0.08px;
+      color: var(--white);
+    }
+    .title h1 .highlight { color: var(--highlight-yellow); }
+    .title p {
+      margin: 0;
+      font-family: 'Hauss', sans-serif;
+      font-weight: 400;
+      font-size: 19px;
+      line-height: 24px;
+      color: var(--white);
+    }
+
+    /* ---------- Graph illustration ---------- */
+    .visuals-floor {
+      position: absolute;
+      top: 312px;
+      left: 0;
+      width: 375px;
+      height: 558px;
+      overflow: hidden;
+    }
+    .visuals-floor .layer {
+      position: absolute;
+      display: block;
+    }
+    .layer-fill   {
+      left: -9px;  top: 8px;  width: 446px; height: 562px;
+      opacity: 0.8;
+      mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 42%);
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 42%);
+    }
+    .layer-market { left: -9px;  top: 31px; width: 449px; height: 561px; }
+    .layer-annuity{ left: -9px;  top: 8px;  width: 450px; height: 584px; }
+    .visuals-floor .layer img,
+    .visuals-floor .layer svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+    .graph-markers {
+      position: absolute;
+      top: 312px;
+      left: 0;
+      width: 375px;
+      height: 558px;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .legend {
+      position: absolute;
+      top: 243px;
+      left: 19px;
+      width: 337px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .legend .key {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legend .key .dot { width: 12px; height: 12px; border-radius: 50%; display: block; }
+    .legend .key .dot-annuity { background: #34DC91; }
+    .legend .key .dot-market { background: #E7FD7F; }
+    .legend .key span {
+      font-family: 'Hauss', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      line-height: 16px;
+      color: var(--light-cypress);
+      white-space: nowrap;
+    }
+
+    .graph-guideline {
+      position: absolute;
+      width: 1.5px;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.85) 0px, rgba(255, 255, 255, 0.85) 4px,
+        transparent 4px, transparent 8px
+      );
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 250ms ease, left 60ms linear, top 60ms linear, height 60ms linear;
+      mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+    }
+
+    .graph-dot {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 250ms ease, left 60ms linear, top 60ms linear;
+    }
+    .graph-dot img { width: 100%; height: 100%; display: block; }
+
+    .graph-badge {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      transform: translate(-50%, -50%);
+      background: var(--white);
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 24px 24px rgba(16,24,40,0.18);
+      opacity: 0;
+      transition: opacity 250ms ease, left 120ms linear, top 120ms linear;
+    }
+    .graph-badge img { width: 24px; height: 24px; display: block; }
+
+    /* ---------- CTAs ---------- */
+    .ctas {
+      position: absolute;
+      top: 608px;
+      left: 0;
+      width: 375px;
+      height: 286px;
+      padding: 0 20px 36px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 24px;
+    }
+    .ctas .btn-next {
+      width: 100%;
+      height: 64px;
+      background: var(--bright-clover);
+      border: none;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Hauss', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      line-height: 24px;
+      color: var(--night-100);
+      cursor: pointer;
+    }
+    .ctas .disclaimer {
+      margin: 0;
+      width: 100%;
+      font-family: 'Hauss', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 18px;
+      color: var(--white-cypress);
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+
+    <div class="status-bar">
+      <span class="status-bar__time">9:41</span>
+      <div class="status-bar__island"></div>
+      <div class="status-bar__icons">
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="1" fill="#fff"/><rect x="4.5" y="5" width="3" height="7" rx="1" fill="#fff"/><rect x="9" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="#fff"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><circle cx="8" cy="11" r="1.2" fill="#fff"/><path d="M5.2 8.2C6.0 7.4 7.0 7 8 7s2 .4 2.8 1.2" stroke="#fff" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M2.8 5.8C4.3 4.3 6.0 3.5 8 3.5s3.7.8 5.2 2.3" stroke="#fff" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M0.4 3.4C2.4 1.3 5.1 0 8 0s5.6 1.3 7.6 3.4" stroke="#fff" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+        <svg width="25" height="13" viewBox="0 0 25 13" fill="none"><rect x="0.5" y="0.5" width="21" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.5"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#fff"/><path d="M23 4.5v4c.83-.5 1.5-1.2 1.5-2s-.67-1.5-1.5-2z" fill="#fff" opacity="0.5"/></svg>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="nav__back" aria-label="Go back" onclick="history.back()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="#fff"/></svg>
+      </button>
+      <div class="nav__logo">
+        <svg width="72" height="16" viewBox="0 0 72 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6888 1.78708V3.85791H18.8313V14.2134H20.9022V3.85791H25.0443V1.78708H14.6888ZM1.59998 1.78708V14.2134H10.7704V12.1421H3.67081V9.03563H9.83949V6.9648H3.67081V3.85791H10.7704V1.78708H1.59998ZM37.4707 1.78708V6.9648H31.2578V1.78708H29.1865V14.2134H31.2578V9.03563H37.4707V14.2134H39.5415V1.78708H37.4707ZM55.3898 2.95879C54.9697 2.53866 54.4709 2.20539 53.922 1.97801C53.3731 1.75063 52.7848 1.63361 52.1906 1.63361C51.5965 1.63361 51.0081 1.75063 50.4592 1.97801C49.9103 2.20539 49.4115 2.53866 48.9914 2.95879C48.7361 3.21451 48.2042 3.81231 48.0226 4.10675C48.8865 3.5735 49.9049 3.3467 50.9134 3.46293C51.922 3.57916 52.8621 4.03163 53.5821 4.74741C54.3021 5.4632 54.7601 6.40058 54.8823 7.40847C55.0044 8.41635 54.7836 9.43601 54.2555 10.3031L54.3253 10.2333C54.6282 10.0495 55.1282 9.6189 55.3898 9.35723C55.81 8.93711 56.1432 8.43834 56.3706 7.88942C56.598 7.3405 56.715 6.75216 56.715 6.15801C56.715 5.56386 56.598 4.97552 56.3706 4.4266C56.1432 3.87768 55.81 3.37891 55.3898 2.95879" fill="#fff"/><path d="M47.7197 10.6291C45.942 8.85147 44.8532 5.58162 46.8594 2.12498L45.9216 3.06275C44.6798 4.30456 43.9823 5.98879 43.9823 7.74494C43.9823 9.50108 44.68 11.1853 45.9218 12.427C47.1636 13.6688 48.8479 14.3664 50.604 14.3663C52.3601 14.3663 54.0443 13.6686 55.2861 12.4268L56.2239 11.4891C52.9319 13.4029 49.6561 12.5655 47.7197 10.6291ZM65.5768 14.4C68.585 14.4 70.5286 12.9095 70.5286 10.6026C70.5286 8.43967 69.0083 7.65735 66.555 7.09741L65.0522 6.76766C63.6991 6.46854 62.9656 6.12092 62.9656 5.14061C62.9656 4.14114 63.897 3.4954 65.3385 3.4954C66.6835 3.4954 67.8672 3.99492 68.5965 4.86844L70.1571 3.61397C69.2981 2.68499 67.7825 1.60001 65.3934 1.60001C62.6941 1.60001 60.7348 3.13516 60.7348 5.25067C60.7348 7.66487 62.7112 8.40181 64.4331 8.77411L66.101 9.14087C67.4196 9.42722 68.2978 9.81995 68.2978 10.8041C68.2978 11.8618 67.346 12.4677 65.687 12.4677C63.8774 12.4677 62.5095 11.5789 61.9363 10.6828L60.2238 11.9159C61.1058 13.1247 62.9639 14.4 65.5768 14.4" fill="#fff"/></svg>
+      </div>
+      <a class="nav__help" href="tel:4152759050">
+        <span class="nav__help-label">Need help?</span>
+        <span class="nav__help-number">(415) 275-9050</span>
+      </a>
+    </div>
+
+    <div class="slide-container">
+    <div class="slide-inner" id="slideInner">
+
+    <div class="iul-hero">
+      <div class="title">
+        <h1>The money you put into an annuity can grow <span class="highlight">up to 10% a year</span>, and is safe from market dips</h1>
+        <p>When the market grows, your annuity grows. And with the built-in floor, you won&rsquo;t lose a cent if the market dips.</p>
+      </div>
+
+      <div class="visuals-floor">
+        <div class="layer layer-fill" id="layer-fill"><img src="assets/iul-floor-1.svg" alt=""></div>
+        <div class="layer layer-market">
+          <svg viewBox="0 0 449.456 560.724" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="market-path" fill="none" stroke="#E7FD7F" stroke-width="3"
+              d="M1.50008 179.724
+                 C1.50008 179.724 27.9696 134.887 47.6539 125.224
+                 C57.1134 120.58 60.2525 180.22 72.6539 170.224
+                 C89.6906 156.49 96.5189 71.4235 108.533 63.2236
+                 C122.66 53.5813 131.48 134.723 142.187 150.224
+                 C153.332 166.358 174.2155 202.245 193.327 188.724
+                 C209.989 176.9355 230.212 120.817 236.417 104.224
+                 C243.148 86.2236 259.094 8.75665 271.994 2.22357
+                 C291.406 -7.60769 285.456 85.2236 305.648 131.224
+                 C314.031 150.322 315.86 175.3615 341.225 170.224
+                 C358.97 166.6285 353.705 108.08 367.846 80.2237
+                 C376.925 62.3384 386.191 50.6784 394.11 36.2237
+                 C403.423 19.2237 447.956 30.2238 447.956 30.2238" />
+          </svg>
+        </div>
+        <div class="layer layer-annuity">
+          <svg viewBox="0 0 450.456 584.5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="annuity-path" fill="none" stroke="#34DC91" stroke-width="4"
+              d="M2 196.5
+                 C2 196.5 28.4696 173.664 48.1538 164
+                 C57.6133 159.357 64.8863 160.665 73.1538 154
+                 C84.5116 144.845 78.9285 128.7 90.9423 120.5
+                 C105.069 110.858 119.083 113.5 148.613 113.5
+                 C178.144 113.5 185.805 114.015 198.546 105
+                 C209.653 97.1414 221.512 87.9044 232.59 80.0003
+                 C244.422 71.5588 249.018 70.0334 261.917 63.5003
+                 C281.329 53.669 314.682 56.5003 314.682 56.5003
+                 L350.86 56.5003
+                 C357.154 56.5003 370.279 45.6831 372.975 42.5003
+                 C390.763 21.5003 386.691 25.9551 394.61 11.5004
+                 C403.923 -5.49967 448.456 5.50044 448.456 5.50044" />
+          </svg>
+        </div>
+
+        <div class="legend">
+          <div class="key">
+            <span class="dot dot-annuity"></span>
+            <span>Your Annuity</span>
+          </div>
+          <div class="key">
+            <span class="dot dot-market"></span>
+            <span>Stock market</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="graph-markers">
+        <div class="graph-guideline" id="graph-guideline"></div>
+        <div class="graph-badge" id="graph-badge"><img src="assets/check-frame.svg" alt=""></div>
+        <div class="graph-dot" id="graph-dot"><img src="assets/ellipse25.svg" alt=""></div>
+      </div>
+
+      <div class="ctas">
+        <button class="btn-next" id="btnNext">Next</button>
+        <p class="disclaimer">Guarantees are based on the claims&rsquo; paying ability of the issuer. Lifelong protection is based upon premium payments above certain thresholds or sufficient cash value supporting policy charges. Accessing cash value can reduce death benefit if not repaid. Cash value performance and premium thresholds are not guaranteed. Projection above assumes a 45-year-old male in good health, paying premiums for 20 years, at an illustrated rate of 5.56%. Payout assumes the insured passes away after age 65.</p>
+      </div>
+    </div>
+
+    </div></div>
+
+  </div>
+
+  <script src="../../components.js"></script>
+  <script>
+    document.getElementById('btnNext').addEventListener('click', function () {
+      EDS.navigate('../dependents-step/');
+    });
+
+    (function () {
+      var yellowPath = document.getElementById('market-path');
+      var greenPath = document.getElementById('annuity-path');
+      var dot = document.getElementById('graph-dot');
+      var badge = document.getElementById('graph-badge');
+      var guideline = document.getElementById('graph-guideline');
+      var fillLayer = document.getElementById('layer-fill');
+
+      var LAYER_LEFT = -9;
+      var LAYER_TOP = 8;
+      var FILL_WIDTH = 446;
+      var GUIDELINE_BOTTOM = 243;
+
+      var yellowLength = yellowPath.getTotalLength();
+      var greenLength = greenPath.getTotalLength();
+      var MARKER_FRACTION = 0.75;
+
+      function placeMarker(localX, localY) {
+        var x = LAYER_LEFT + localX;
+        var y = LAYER_TOP + localY;
+        var badgeBottom = y - 14;
+        dot.style.left = x + 'px';
+        dot.style.top = y + 'px';
+        badge.style.left = x + 'px';
+        badge.style.top = (y - 34) + 'px';
+        guideline.style.left = x + 'px';
+        guideline.style.top = badgeBottom + 'px';
+        guideline.style.height = Math.max(0, GUIDELINE_BOTTOM - badgeBottom) + 'px';
+      }
+
+      function updateFillReveal(rawProgress) {
+        var pt = greenPath.getPointAtLength(rawProgress * greenLength);
+        var tipAbsX = LAYER_LEFT + pt.x;
+        var localFillX = tipAbsX + 9;
+        var insetRight = Math.max(0, FILL_WIDTH - localFillX);
+        fillLayer.style.clipPath = 'inset(0 ' + insetRight + 'px 0 0)';
+      }
+
+      function prepPath(path, length) {
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+      }
+      prepPath(yellowPath, yellowLength);
+      prepPath(greenPath, greenLength);
+
+      var startPt = greenPath.getPointAtLength(0);
+      placeMarker(startPt.x, startPt.y);
+      updateFillReveal(0);
+
+      function drawPath(path, length, duration, delay, onFrame) {
+        setTimeout(function () {
+          var start = null;
+          function step(now) {
+            if (start === null) start = now;
+            var progress = Math.min(1, (now - start) / duration);
+            path.style.strokeDashoffset = String(length * (1 - progress));
+            if (onFrame) onFrame(progress);
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }, delay);
+      }
+
+      var YELLOW_DURATION = 3000;
+      var GREEN_DELAY = 500;
+      var GREEN_DURATION = YELLOW_DURATION;
+
+      drawPath(yellowPath, yellowLength, YELLOW_DURATION, 0);
+
+      setTimeout(function () {
+        dot.style.opacity = '1';
+        badge.style.opacity = '1';
+        guideline.style.opacity = '1';
+      }, GREEN_DELAY);
+
+      drawPath(greenPath, greenLength, GREEN_DURATION, GREEN_DELAY, function (progress) {
+        updateFillReveal(progress);
+        var clamped = Math.min(progress, MARKER_FRACTION);
+        var pt = greenPath.getPointAtLength(clamped * greenLength);
+        placeMarker(pt.x, pt.y);
+      });
+    })();
+  </script>
+</body>
+</html>
