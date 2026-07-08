@@ -25,13 +25,14 @@
 
     /* On an actual phone (not the desktop mockup preview), fill the real
        device width edge-to-edge instead of showing the fixed 375px frame
-       with gray margins around it. The internal layout is precisely
-       tuned to 375px, so it's uniformly scaled up/down to fit rather
-       than rebuilt with fluid units. */
+       with gray margins around it. Unlike a transform:scale() hack, the
+       elements below use fluid widths (100%, left+right insets, percentage
+       offsets) so text re-wraps and the graph reflows to the real width
+       instead of just being visually blown up. */
     @media (max-width: 480px) {
       html, body { background: #0b4368; }
       body { padding: 0; display: block; }
-      .phone { border-radius: 0; box-shadow: none; margin: 0; transform-origin: top left; }
+      .phone { width: 100%; border-radius: 0; box-shadow: none; margin: 0; }
     }
 
     :root {
@@ -49,7 +50,7 @@
     .iul-hero {
       position: relative;
       flex-shrink: 0;
-      width: 375px;
+      width: 100%;
       height: 910px;
       background: transparent;
       overflow: hidden;
@@ -60,7 +61,7 @@
       position: absolute;
       top: 32px;
       left: 16px;
-      width: 343px;
+      right: 16px;
     }
     .title h1 {
       margin: 0 0 16px 0;
@@ -82,11 +83,17 @@
     }
 
     /* ---------- Graph illustration ---------- */
+    /* Horizontal offsets/widths below are expressed as percentages of
+       this container's own (now fluid) width, preserving the exact same
+       proportions as the 375px reference design (e.g. 446px -> 118.93%)
+       so the illustration reflows to the real device width instead of
+       being clipped or requiring a page-wide scale transform. Vertical
+       values stay in px since only width needs to be responsive here. */
     .visuals-floor {
       position: absolute;
       top: 312px;
       left: 0;
-      width: 375px;
+      width: 100%;
       height: 558px;
       overflow: hidden;
     }
@@ -95,13 +102,13 @@
       display: block;
     }
     .layer-fill   {
-      left: -9px;  top: 8px;  width: 446px; height: 562px;
+      left: -2.4%;  top: 8px;  width: 118.9333%; height: 562px;
       opacity: 0.8;
       mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 42%);
       -webkit-mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 42%);
     }
-    .layer-market { left: -9px;  top: 31px; width: 449px; height: 561px; }
-    .layer-annuity{ left: -9px;  top: 8px;  width: 450px; height: 584px; }
+    .layer-market { left: -2.4%;  top: 31px; width: 119.7333%; height: 561px; }
+    .layer-annuity{ left: -2.4%;  top: 8px;  width: 120%; height: 584px; }
     .visuals-floor .layer img,
     .visuals-floor .layer svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
@@ -109,7 +116,7 @@
       position: absolute;
       top: 312px;
       left: 0;
-      width: 375px;
+      width: 100%;
       height: 558px;
       overflow: visible;
       pointer-events: none;
@@ -119,7 +126,7 @@
       position: absolute;
       top: 243px;
       left: 19px;
-      width: 337px;
+      right: 19px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -188,7 +195,7 @@
       position: absolute;
       top: 608px;
       left: 0;
-      width: 375px;
+      width: 100%;
       height: 286px;
       padding: 0 20px 36px 20px;
       display: flex;
@@ -333,45 +340,36 @@
     });
 
     (function () {
-      var MOBILE_BREAKPOINT = 480;
-      var DESIGN_WIDTH = 375;
-      var phone = document.querySelector('.phone');
-
-      function fitToViewport() {
-        if (window.innerWidth <= MOBILE_BREAKPOINT) {
-          var scale = window.innerWidth / DESIGN_WIDTH;
-          phone.style.transform = 'scale(' + scale + ')';
-          document.body.style.height = (phone.offsetHeight * scale) + 'px';
-        } else {
-          phone.style.transform = '';
-          document.body.style.height = '';
-        }
-      }
-
-      window.addEventListener('resize', fitToViewport);
-      window.addEventListener('orientationchange', fitToViewport);
-      fitToViewport();
-    })();
-
-    (function () {
       var yellowPath = document.getElementById('market-path');
       var greenPath = document.getElementById('annuity-path');
       var dot = document.getElementById('graph-dot');
       var badge = document.getElementById('graph-badge');
       var guideline = document.getElementById('graph-guideline');
       var fillLayer = document.getElementById('layer-fill');
+      var visualsFloor = document.querySelector('.visuals-floor');
 
+      // Reference (design) values at the original 375px-wide layout.
+      // .visuals-floor is now fluid (width:100%), so horizontal positions
+      // are rescaled at runtime to match its actual current width — the
+      // graph reflows with the device instead of needing a page-wide
+      // scale transform. Vertical values stay fixed (only width is fluid).
+      var REFERENCE_WIDTH = 375;
       var LAYER_LEFT = -9;
       var LAYER_TOP = 8;
       var FILL_WIDTH = 446;
       var GUIDELINE_BOTTOM = 243;
+
+      function getScale() {
+        return visualsFloor.getBoundingClientRect().width / REFERENCE_WIDTH;
+      }
 
       var yellowLength = yellowPath.getTotalLength();
       var greenLength = greenPath.getTotalLength();
       var MARKER_FRACTION = 0.75;
 
       function placeMarker(localX, localY) {
-        var x = LAYER_LEFT + localX;
+        var scale = getScale();
+        var x = (LAYER_LEFT + localX) * scale;
         var y = LAYER_TOP + localY;
         var badgeBottom = y - 14;
         dot.style.left = x + 'px';
@@ -384,10 +382,11 @@
       }
 
       function updateFillReveal(rawProgress) {
+        var scale = getScale();
         var pt = greenPath.getPointAtLength(rawProgress * greenLength);
-        var tipAbsX = LAYER_LEFT + pt.x;
-        var localFillX = tipAbsX + 9;
-        var insetRight = Math.max(0, FILL_WIDTH - localFillX);
+        var tipAbsX = (LAYER_LEFT + pt.x) * scale;
+        var localFillX = tipAbsX + 9 * scale;
+        var insetRight = Math.max(0, FILL_WIDTH * scale - localFillX);
         fillLayer.style.clipPath = 'inset(0 ' + insetRight + 'px 0 0)';
       }
 
@@ -428,9 +427,20 @@
         guideline.style.opacity = '1';
       }, GREEN_DELAY);
 
+      var lastProgress = 0;
       drawPath(greenPath, greenLength, GREEN_DURATION, GREEN_DELAY, function (progress) {
+        lastProgress = progress;
         updateFillReveal(progress);
         var clamped = Math.min(progress, MARKER_FRACTION);
+        var pt = greenPath.getPointAtLength(clamped * greenLength);
+        placeMarker(pt.x, pt.y);
+      });
+
+      // Re-apply the current (or settled) position on resize/rotation,
+      // since the fluid layout's scale factor depends on the live width.
+      window.addEventListener('resize', function () {
+        updateFillReveal(lastProgress);
+        var clamped = Math.min(lastProgress, MARKER_FRACTION);
         var pt = greenPath.getPointAtLength(clamped * greenLength);
         placeMarker(pt.x, pt.y);
       });
