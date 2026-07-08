@@ -65,6 +65,14 @@ body {
   display: flex; align-items: center; gap: 6px;
 }
 
+/* On a real phone the device already has its own OS status bar/notch,
+   so the fake mockup one (used to make the desktop preview look like a
+   phone screenshot) would just be a redundant second bar. Hide it below
+   the same breakpoint used for the mobile full-width scaling. */
+@media (max-width: 480px) {
+  .status-bar { display: none; }
+}
+
 /* ── Nav ────────────────────────────────────────────────────── */
 .nav { height: 52px; position: relative; flex-shrink: 0; background: #fff; }
 .nav__back {
