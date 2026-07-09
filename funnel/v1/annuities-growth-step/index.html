@@ -403,11 +403,18 @@
 
       var pendingTimeouts = [];
       var pendingRafIds = [];
+      // Across a bfcache freeze/resume, a requestAnimationFrame callback
+      // scheduled before the freeze can still fire once more even after
+      // cancelAnimationFrame is called with its (possibly stale) id —
+      // this flag makes that callback a guaranteed no-op instead of
+      // silently overwriting the final state the pageshow handler forces.
+      var isFinalized = false;
 
       function drawPath(path, length, duration, delay, onFrame) {
         var timeoutId = setTimeout(function () {
           var start = null;
           function step(now) {
+            if (isFinalized) return;
             if (start === null) start = now;
             var progress = Math.min(1, (now - start) / duration);
             path.style.strokeDashoffset = String(length * (1 - progress));
@@ -456,6 +463,7 @@
       // instead of replaying a broken animation.
       window.addEventListener('pageshow', function (event) {
         if (!event.persisted) return;
+        isFinalized = true;
         pendingTimeouts.forEach(clearTimeout);
         pendingRafIds.forEach(cancelAnimationFrame);
         yellowPath.style.strokeDashoffset = '0';

@@ -149,7 +149,9 @@
         card.classList.add('is-selected');
 
         sessionStorage.setItem('annuities_goal', card.dataset.value);
-        var nextStep = card.dataset.value === 'wealth' ? '../annuities-growth-step/' : '../dependents-step/';
+        var nextStep = card.dataset.value === 'wealth' ? '../annuities-growth-step/'
+          : card.dataset.value === 'retirement' ? '../annuities-income-step/'
+          : '../dependents-step/';
         setTimeout(function() {
           EDS.navigate(nextStep);
         }, 300);

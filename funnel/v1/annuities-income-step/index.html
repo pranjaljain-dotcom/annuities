@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Annuities – Legacy</title>
+  <title>Annuities – Income</title>
   <link rel="stylesheet" href="../../components.css?v=3" />
   <style>
     /* This screen's hero content is taller than the standard slide area.
@@ -79,9 +79,10 @@
       color: var(--white);
     }
 
-    /* ---------- Legacy illustration: a jar of grown value, with a
-       portion flowing off to a heart representing beneficiaries ---------- */
-    .legacy-illustration {
+    /* ---------- Income illustration: a jar of grown value drains, but
+       a continuous income stream keeps flowing regardless — the pot can
+       run dry, the income doesn't ---------- */
+    .income-illustration {
       position: absolute;
       top: 272px;
       left: 0;
@@ -89,9 +90,19 @@
       height: 300px;
       overflow: visible;
     }
-    .legacy-illustration svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
+    .income-illustration svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
 
-    .heart-badge {
+    #incomeArrow {
+      stroke-dasharray: 6 6;
+    }
+    #incomeArrow.is-flowing {
+      animation: incomeFlow 1s linear infinite;
+    }
+    @keyframes incomeFlow {
+      to { stroke-dashoffset: -24; }
+    }
+
+    .infinity-badge {
       position: absolute;
       top: 32px;
       left: 64%; /* 240/375 */
@@ -107,10 +118,10 @@
       opacity: 0;
       transition: opacity 400ms ease, transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .heart-badge.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    .heart-badge svg { width: 26px; height: 26px; }
+    .infinity-badge.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .infinity-badge svg { width: 28px; height: 28px; }
 
-    .legacy-caption {
+    .income-caption {
       position: absolute;
       top: 66px;
       left: 16px;
@@ -124,7 +135,7 @@
       opacity: 0;
       transition: opacity 400ms ease;
     }
-    .legacy-caption.is-visible { opacity: 1; }
+    .income-caption.is-visible { opacity: 1; }
 
     /* ---------- CTAs ---------- */
     .ctas {
@@ -198,11 +209,11 @@
 
     <div class="iul-hero">
       <div class="title">
-        <h1>Whatever you don&rsquo;t use still goes to your loved ones</h1>
-        <p>If you don&rsquo;t use everything you grew, that&rsquo;s ok. What&rsquo;s left behind goes to the people you love.</p>
+        <h1>All the money you grew can create a guaranteed income stream, for life</h1>
+        <p>Independent of your savings today. You&rsquo;ll never run out, even if the pot you built up runs dry, and even if you live to 120.</p>
       </div>
 
-      <div class="legacy-illustration">
+      <div class="income-illustration">
         <svg viewBox="0 0 375 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="liquidGradient" x1="0" y1="1" x2="0" y2="0">
@@ -219,22 +230,24 @@
           <!-- jar body -->
           <rect x="105.5" y="150" width="164" height="110" rx="24" fill="rgba(255,255,255,0.06)" stroke="#E3F8F6" stroke-width="2.5" opacity="0.9"/>
 
-          <!-- liquid fill, clipped to the jar body -->
+          <!-- liquid, clipped to the jar body, drains from full toward empty -->
           <g clip-path="url(#jarClip)">
-            <rect id="liquidRect" x="105.5" y="260" width="164" height="0" fill="url(#liquidGradient)" />
-            <path id="liquidSurface" d="M105.5 260 Q187.5 260 269.5 260" stroke="#59F8B1" stroke-width="3" fill="none" />
+            <rect id="liquidRect" x="105.5" y="174" width="164" height="86" fill="url(#liquidGradient)" />
+            <path id="liquidSurface" d="M105.5 174 Q187.5 174 269.5 174" stroke="#59F8B1" stroke-width="3" fill="none" />
           </g>
 
-          <!-- dashed curved arrow from the jar up to the heart -->
-          <path id="legacyArrow" d="M195 110 C 205 90, 218 72, 232 58"
-                fill="none" stroke="#E3F8F6" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 6" opacity="0" />
+          <!-- dashed curved flow line from the jar up to the infinity badge,
+               keeps looping once revealed to read as continuous, not one-time -->
+          <path id="incomeArrow" d="M195 110 C 205 90, 218 72, 232 58"
+                fill="none" stroke="#E3F8F6" stroke-width="2" stroke-linecap="round" opacity="0" />
         </svg>
 
-        <div class="heart-badge" id="heartBadge">
+        <div class="infinity-badge" id="infinityBadge">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGradient)"/>
+            <path d="M6.5 8C4.567 8 3 9.567 3 11.5S4.567 15 6.5 15c1.187 0 2.238-.593 2.87-1.5L12 10l2.63 3.5c.632.907 1.683 1.5 2.87 1.5 1.933 0 3.5-1.567 3.5-3.5S19.433 8 17.5 8c-1.187 0-2.238.593-2.87 1.5L12 13l-2.63-3.5C8.738 8.593 7.687 8 6.5 8z"
+                  fill="none" stroke="url(#infinityGradient)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
             <defs>
-              <linearGradient id="heartGradient" x1="2" y1="3" x2="22" y2="21.35" gradientUnits="userSpaceOnUse">
+              <linearGradient id="infinityGradient" x1="3" y1="8" x2="21" y2="15" gradientUnits="userSpaceOnUse">
                 <stop offset="0.35" stop-color="#28BA8C"/>
                 <stop offset="0.65" stop-color="#59F8B1"/>
               </linearGradient>
@@ -242,12 +255,12 @@
           </svg>
         </div>
 
-        <p class="legacy-caption" id="legacyCaption">Passed on to your beneficiaries</p>
+        <p class="income-caption" id="incomeCaption">Guaranteed for life</p>
       </div>
 
       <div class="ctas">
         <button class="btn-next" id="btnNext">Next</button>
-        <p class="disclaimer">Death benefit payouts are based on the policy&rsquo;s cash value at the time of the insured&rsquo;s death, minus any outstanding loans or withdrawals, and are subject to the claims-paying ability of the issuer. Beneficiary designations should be kept up to date to ensure proceeds are paid according to your wishes. Benefits may be reduced by fees, surrender charges, or accessed cash value.</p>
+        <p class="disclaimer">Guaranteed lifetime income is based on the terms of the income rider and the claims-paying ability of the issuer. Income payments may be reduced by fees, prior withdrawals, or loans taken against the policy. Guarantees do not protect against inflation and are subject to the terms and conditions of your contract.</p>
       </div>
     </div>
 
@@ -258,29 +271,27 @@
   <script src="../../components.js?v=3"></script>
   <script>
     document.getElementById('btnNext').addEventListener('click', function () {
-      EDS.navigate('../familiarity-step/');
+      EDS.navigate('../dependents-step/');
     });
 
     (function () {
       var liquidRect = document.getElementById('liquidRect');
       var liquidSurface = document.getElementById('liquidSurface');
-      var arrow = document.getElementById('legacyArrow');
-      var heartBadge = document.getElementById('heartBadge');
-      var caption = document.getElementById('legacyCaption');
+      var arrow = document.getElementById('incomeArrow');
+      var badge = document.getElementById('infinityBadge');
+      var caption = document.getElementById('incomeCaption');
 
       var JAR_BOTTOM = 260;
-      var FILL_HEIGHT = 86; // ~78% of the 110px-tall jar body — leaves visible headroom
-      var FILL_DURATION = 1800;
-      var ARROW_DELAY = 1400;
-      var ARROW_DURATION = 900;
+      var DRAIN_START = 86; // ~78% of the 110px-tall jar body — starts already grown
+      var DRAIN_END = 10;   // pot notionally "runs dry", but doesn't fully vanish
+      var DRAIN_DURATION = 1800;
+      var FLOW_DELAY = 1400;
 
-      var fillRafId = null;
-      var arrowRafId = null;
-      var arrowTimeoutId = null;
+      var drainRafId = null;
       // Across a bfcache freeze/resume, a requestAnimationFrame callback
       // scheduled before the freeze can still fire once more even after
       // cancelAnimationFrame is called with its (possibly stale) id —
-      // this flag makes those callbacks a guaranteed no-op instead of
+      // this flag makes that callback a guaranteed no-op instead of
       // silently overwriting the final state we just forced.
       var isFinalized = false;
 
@@ -290,67 +301,49 @@
         liquidSurface.setAttribute('d', 'M105.5 ' + (JAR_BOTTOM - h) + ' Q187.5 ' + (JAR_BOTTOM - h - 6) + ' 269.5 ' + (JAR_BOTTOM - h));
       }
 
-      function animateFill(duration) {
+      function animateDrain(duration) {
         var start = null;
         function step(now) {
           if (isFinalized) return;
           if (start === null) start = now;
           var progress = Math.min(1, (now - start) / duration);
           var eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-          setLiquidHeight(FILL_HEIGHT * eased);
-          if (progress < 1) fillRafId = requestAnimationFrame(step);
+          setLiquidHeight(DRAIN_START - (DRAIN_START - DRAIN_END) * eased);
+          if (progress < 1) drainRafId = requestAnimationFrame(step);
         }
-        fillRafId = requestAnimationFrame(step);
+        drainRafId = requestAnimationFrame(step);
       }
 
-      function animateArrow() {
-        var length = arrow.getTotalLength();
-        arrow.style.strokeDasharray = length;
-        arrow.style.strokeDashoffset = length;
+      function revealFlow() {
         arrow.style.opacity = '1';
-        var start = null;
-        function step(now) {
-          if (isFinalized) return;
-          if (start === null) start = now;
-          var progress = Math.min(1, (now - start) / ARROW_DURATION);
-          arrow.style.strokeDashoffset = String(length * (1 - progress));
-          if (progress < 1) {
-            arrowRafId = requestAnimationFrame(step);
-          } else {
-            heartBadge.classList.add('is-visible');
-            caption.classList.add('is-visible');
-          }
-        }
-        arrowRafId = requestAnimationFrame(step);
-      }
-
-      // Jump straight to the fully-settled end state, skipping the
-      // animation entirely.
-      function setFinalState() {
-        isFinalized = true;
-        if (fillRafId) cancelAnimationFrame(fillRafId);
-        if (arrowRafId) cancelAnimationFrame(arrowRafId);
-        if (arrowTimeoutId) clearTimeout(arrowTimeoutId);
-        setLiquidHeight(FILL_HEIGHT);
-        var length = arrow.getTotalLength();
-        arrow.style.strokeDasharray = length;
-        arrow.style.strokeDashoffset = '0';
-        arrow.style.opacity = '1';
-        heartBadge.classList.add('is-visible');
+        arrow.classList.add('is-flowing');
+        badge.classList.add('is-visible');
         caption.classList.add('is-visible');
       }
 
-      animateFill(FILL_DURATION);
-      arrowTimeoutId = setTimeout(animateArrow, ARROW_DELAY);
+      // Jump straight to the fully-settled end state, skipping the
+      // one-time drain animation entirely (the flow loop is pure CSS and
+      // pauses/resumes safely on its own, so it doesn't need this).
+      function setFinalState() {
+        isFinalized = true;
+        if (drainRafId) cancelAnimationFrame(drainRafId);
+        setLiquidHeight(DRAIN_END);
+        revealFlow();
+      }
+
+      setLiquidHeight(DRAIN_START);
+      animateDrain(DRAIN_DURATION);
+      var flowTimeoutId = setTimeout(revealFlow, FLOW_DELAY);
 
       // When the browser restores this page from its back-forward cache
       // (e.g. hitting the nav back button after leaving via Next), RAF
       // loops and timeouts scheduled before the page was frozen can
-      // resume in a broken state (the arrow rendering as a stray line,
-      // the heart/caption never appearing). Skip straight to the
-      // finished illustration instead of replaying a broken animation.
+      // resume in a broken state. Skip straight to the finished
+      // illustration instead of replaying a broken animation.
       window.addEventListener('pageshow', function (event) {
-        if (event.persisted) setFinalState();
+        if (!event.persisted) return;
+        clearTimeout(flowTimeoutId);
+        setFinalState();
       });
     })();
   </script>
