@@ -79,53 +79,30 @@
       color: var(--white);
     }
 
-    /* ---------- Income illustration: a jar of grown value drains, but
-       a continuous income stream keeps flowing regardless — the pot can
-       run dry, the income doesn't ---------- */
+    /* ---------- Income illustration: pot with coins flowing in (left)
+       and continuing to flow out (right), even once it runs dry ---------- */
     .income-illustration {
       position: absolute;
       top: 272px;
       left: 0;
       width: 100%;
-      height: 300px;
-      overflow: visible;
-    }
-    .income-illustration svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
-
-    #incomeArrow {
-      stroke-dasharray: 6 6;
-    }
-    #incomeArrow.is-flowing {
-      animation: incomeFlow 1s linear infinite;
-    }
-    @keyframes incomeFlow {
-      to { stroke-dashoffset: -24; }
-    }
-
-    .infinity-badge {
-      position: absolute;
-      top: 32px;
-      left: 64%; /* 240/375 */
-      transform: translate(-50%, -50%);
-      width: 48px;
-      height: 48px;
-      background: var(--white);
-      border-radius: 15px;
+      height: 280px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      box-shadow: 0px 24px 24px rgba(16,24,40,0.18);
-      opacity: 0;
-      transition: opacity 400ms ease, transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      gap: 12px;
     }
-    .infinity-badge.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    .infinity-badge svg { width: 28px; height: 28px; }
+    .pot-flow-image {
+      width: 64%;
+      max-width: 240px;
+      height: auto;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 500ms ease, transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pot-flow-image.is-visible { opacity: 1; transform: scale(1); }
 
     .income-caption {
-      position: absolute;
-      top: 66px;
-      left: 16px;
-      right: 16px;
       text-align: center;
       font-family: 'Hauss', sans-serif;
       font-weight: 500;
@@ -214,47 +191,7 @@
       </div>
 
       <div class="income-illustration">
-        <svg viewBox="0 0 375 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="liquidGradient" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stop-color="#28BA8C"/>
-              <stop offset="1" stop-color="#59F8B1"/>
-            </linearGradient>
-            <clipPath id="jarClip">
-              <rect x="105.5" y="150" width="164" height="110" rx="24" />
-            </clipPath>
-          </defs>
-
-          <!-- jar neck -->
-          <rect x="147.5" y="110" width="80" height="40" rx="10" fill="none" stroke="#E3F8F6" stroke-width="2.5" opacity="0.9"/>
-          <!-- jar body -->
-          <rect x="105.5" y="150" width="164" height="110" rx="24" fill="rgba(255,255,255,0.06)" stroke="#E3F8F6" stroke-width="2.5" opacity="0.9"/>
-
-          <!-- liquid, clipped to the jar body, drains from full toward empty -->
-          <g clip-path="url(#jarClip)">
-            <rect id="liquidRect" x="105.5" y="174" width="164" height="86" fill="url(#liquidGradient)" />
-            <path id="liquidSurface" d="M105.5 174 Q187.5 174 269.5 174" stroke="#59F8B1" stroke-width="3" fill="none" />
-          </g>
-
-          <!-- dashed curved flow line from the jar up to the infinity badge,
-               keeps looping once revealed to read as continuous, not one-time -->
-          <path id="incomeArrow" d="M195 110 C 205 90, 218 72, 232 58"
-                fill="none" stroke="#E3F8F6" stroke-width="2" stroke-linecap="round" opacity="0" />
-        </svg>
-
-        <div class="infinity-badge" id="infinityBadge">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.5 8C4.567 8 3 9.567 3 11.5S4.567 15 6.5 15c1.187 0 2.238-.593 2.87-1.5L12 10l2.63 3.5c.632.907 1.683 1.5 2.87 1.5 1.933 0 3.5-1.567 3.5-3.5S19.433 8 17.5 8c-1.187 0-2.238.593-2.87 1.5L12 13l-2.63-3.5C8.738 8.593 7.687 8 6.5 8z"
-                  fill="none" stroke="url(#infinityGradient)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-            <defs>
-              <linearGradient id="infinityGradient" x1="3" y1="8" x2="21" y2="15" gradientUnits="userSpaceOnUse">
-                <stop offset="0.35" stop-color="#28BA8C"/>
-                <stop offset="0.65" stop-color="#59F8B1"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
+        <img class="pot-flow-image" id="potFlowImage" src="assets/pot-flow.png" alt="Coins flowing continuously in and out of a pot of grown value" />
         <p class="income-caption" id="incomeCaption">Guaranteed for life</p>
       </div>
 
@@ -275,75 +212,26 @@
     });
 
     (function () {
-      var liquidRect = document.getElementById('liquidRect');
-      var liquidSurface = document.getElementById('liquidSurface');
-      var arrow = document.getElementById('incomeArrow');
-      var badge = document.getElementById('infinityBadge');
+      var image = document.getElementById('potFlowImage');
       var caption = document.getElementById('incomeCaption');
+      var REVEAL_DELAY = 300;
 
-      var JAR_BOTTOM = 260;
-      var DRAIN_START = 86; // ~78% of the 110px-tall jar body — starts already grown
-      var DRAIN_END = 10;   // pot notionally "runs dry", but doesn't fully vanish
-      var DRAIN_DURATION = 1800;
-      var FLOW_DELAY = 1400;
-
-      var drainRafId = null;
-      // Across a bfcache freeze/resume, a requestAnimationFrame callback
-      // scheduled before the freeze can still fire once more even after
-      // cancelAnimationFrame is called with its (possibly stale) id —
-      // this flag makes that callback a guaranteed no-op instead of
-      // silently overwriting the final state we just forced.
-      var isFinalized = false;
-
-      function setLiquidHeight(h) {
-        liquidRect.setAttribute('y', JAR_BOTTOM - h);
-        liquidRect.setAttribute('height', h);
-        liquidSurface.setAttribute('d', 'M105.5 ' + (JAR_BOTTOM - h) + ' Q187.5 ' + (JAR_BOTTOM - h - 6) + ' 269.5 ' + (JAR_BOTTOM - h));
-      }
-
-      function animateDrain(duration) {
-        var start = null;
-        function step(now) {
-          if (isFinalized) return;
-          if (start === null) start = now;
-          var progress = Math.min(1, (now - start) / duration);
-          var eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-          setLiquidHeight(DRAIN_START - (DRAIN_START - DRAIN_END) * eased);
-          if (progress < 1) drainRafId = requestAnimationFrame(step);
-        }
-        drainRafId = requestAnimationFrame(step);
-      }
-
-      function revealFlow() {
-        arrow.style.opacity = '1';
-        arrow.classList.add('is-flowing');
-        badge.classList.add('is-visible');
+      function reveal() {
+        image.classList.add('is-visible');
         caption.classList.add('is-visible');
       }
 
-      // Jump straight to the fully-settled end state, skipping the
-      // one-time drain animation entirely (the flow loop is pure CSS and
-      // pauses/resumes safely on its own, so it doesn't need this).
-      function setFinalState() {
-        isFinalized = true;
-        if (drainRafId) cancelAnimationFrame(drainRafId);
-        setLiquidHeight(DRAIN_END);
-        revealFlow();
-      }
-
-      setLiquidHeight(DRAIN_START);
-      animateDrain(DRAIN_DURATION);
-      var flowTimeoutId = setTimeout(revealFlow, FLOW_DELAY);
+      var revealTimeoutId = setTimeout(reveal, REVEAL_DELAY);
 
       // When the browser restores this page from its back-forward cache
-      // (e.g. hitting the nav back button after leaving via Next), RAF
-      // loops and timeouts scheduled before the page was frozen can
-      // resume in a broken state. Skip straight to the finished
-      // illustration instead of replaying a broken animation.
+      // (e.g. hitting the nav back button after leaving via Next), make
+      // sure the reveal has actually happened instead of leaving the
+      // image/caption stuck at their pre-animation opacity if the timeout
+      // hadn't fired yet when the page was frozen.
       window.addEventListener('pageshow', function (event) {
         if (!event.persisted) return;
-        clearTimeout(flowTimeoutId);
-        setFinalState();
+        clearTimeout(revealTimeoutId);
+        reveal();
       });
     })();
   </script>
