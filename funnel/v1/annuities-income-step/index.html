@@ -287,28 +287,28 @@
           </g>
 
           <!-- coins being withdrawn from the pot's rim: each coin loops on its own
-               independent duration (4s / 3.5s / 3s) so they drift in and out of
-               phase with each other instead of repeating in lockstep, following a
-               curved arc — rising, bowing over, then curving out to the right. -->
+               independent duration (4s / 3.5s / 3s), and each starts 1s after the
+               previous one, so they drift in and out of phase with each other
+               instead of repeating in lockstep. Path is a gentle bow, not a dome. -->
           <g opacity="0">
-            <animate attributeName="opacity" dur="4s" repeatCount="indefinite" calcMode="linear"
+            <animate attributeName="opacity" begin="0s" dur="4s" repeatCount="indefinite" calcMode="linear"
               keyTimes="0;0.05;0.85;0.90;1" values="0;1;1;0;0"/>
-            <animateMotion dur="4s" repeatCount="indefinite" calcMode="linear"
-              keyTimes="0;0.90;1" keyPoints="0;1;1" path="M188,45 C178,-20 195,-65 235,-78 C270,-90 295,-70 300,-35"/>
+            <animateMotion begin="0s" dur="4s" repeatCount="indefinite" calcMode="linear"
+              keyTimes="0;0.90;1" keyPoints="0;1;1" path="M188,45 C205,15 250,-15 290,-40"/>
             <use href="#coinTemplate"/>
           </g>
           <g opacity="0">
-            <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite" calcMode="linear"
+            <animate attributeName="opacity" begin="1s" dur="3.5s" repeatCount="indefinite" calcMode="linear"
               keyTimes="0;0.05;0.85;0.90;1" values="0;1;1;0;0"/>
-            <animateMotion dur="3.5s" repeatCount="indefinite" calcMode="linear"
-              keyTimes="0;0.90;1" keyPoints="0;1;1" path="M188,45 C178,-20 195,-65 235,-78 C270,-90 295,-70 300,-35"/>
+            <animateMotion begin="1s" dur="3.5s" repeatCount="indefinite" calcMode="linear"
+              keyTimes="0;0.90;1" keyPoints="0;1;1" path="M188,45 C205,15 250,-15 290,-40"/>
             <use href="#coinTemplate"/>
           </g>
           <g opacity="0">
-            <animate attributeName="opacity" dur="3s" repeatCount="indefinite" calcMode="linear"
+            <animate attributeName="opacity" begin="2s" dur="3s" repeatCount="indefinite" calcMode="linear"
               keyTimes="0;0.05;0.85;0.90;1" values="0;1;1;0;0"/>
-            <animateMotion dur="3s" repeatCount="indefinite" calcMode="linear"
-              keyTimes="0;0.90;1" keyPoints="0;1;1" path="M188,45 C178,-20 195,-65 235,-78 C270,-90 295,-70 300,-35"/>
+            <animateMotion begin="2s" dur="3s" repeatCount="indefinite" calcMode="linear"
+              keyTimes="0;0.90;1" keyPoints="0;1;1" path="M188,45 C205,15 250,-15 290,-40"/>
             <use href="#coinTemplate"/>
           </g>
         </svg>
