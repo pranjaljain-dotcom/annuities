@@ -54,6 +54,9 @@ Annuities/
 
 - [V1 funnel](https://pranjaljain-dotcom.github.io/annuities/funnel/v1/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/funnel/v1/goals-step/`
 - [V2 funnel](https://pranjaljain-dotcom.github.io/annuities/funnel/v2/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/funnel/v2/goals-step/`
+- [V3 funnel](https://pranjaljain-dotcom.github.io/annuities/funnel/v3/goals-step/) — `https://pranjaljain-dotcom.github.io/annuities/funnel/v3/goals-step/`
+
+V3 was forked from V1 (including the `annuities-growth-step`, `annuities-income-step`, and `annuities-legacy-step` education screens) and is where active work now happens — see `funnel/README.md`.
 
 ---
 
