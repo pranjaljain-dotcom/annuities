@@ -4,6 +4,9 @@ Static HTML prototype of the Ethos annuities onboarding funnel. Designed for 375
 
 **GitHub Pages (V1):** https://pranjaljain-dotcom.github.io/annuities-funnel/v1/state-step/
 **GitHub Pages (V2):** https://pranjaljain-dotcom.github.io/annuities-funnel/v2/state-step/
+**GitHub Pages (V3):** https://pranjaljain-dotcom.github.io/annuities-funnel/v3/state-step/
+
+V3 is a copy of V1 as of the point it forked — going forward, active work happens in `v3/`.
 
 ---
 
