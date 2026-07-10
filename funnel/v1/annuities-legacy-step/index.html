@@ -108,7 +108,7 @@
        the left while the pot stays put. */
     .pot-group, .hand-group {
       transform: translateX(-320px);
-      transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
     }
     .pot-group.is-entered, .hand-group.is-entered { transform: translateX(0); }
     .hand-group.is-hand-exited {
@@ -553,7 +553,7 @@
       var handGroup = document.getElementById('handGroup');
 
       var REVEAL_DELAY = 300;
-      var ENTER_DURATION = 700; // matches .pot-group/.hand-group transition duration
+      var ENTER_DURATION = 1400; // matches .pot-group/.hand-group transition duration
       var HAND_EXIT_DELAY = 300; // pause after arriving before the hand leaves
 
       var enterTimeoutId = null;
