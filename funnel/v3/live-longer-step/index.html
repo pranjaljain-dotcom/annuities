@@ -51,8 +51,14 @@
       line-height: 40px;
       letter-spacing: -0.08px;
       color: var(--white);
-      min-height: 120px; /* reserve 3 lines so the headline itself doesn't jump as it types */
     }
+    /* Every character of the headline is rendered (invisible) from the
+       start, so the browser computes the final 3-line wrap once and it
+       never changes as characters reveal — otherwise, typing character
+       by character via textContent re-wraps the paragraph on every
+       keystroke, which reads as words jumping between lines mid-type. */
+    .title h1 .char { opacity: 0; }
+    .title h1 .char.is-visible { opacity: 1; }
     .title .cursor {
       display: inline-block;
       margin-left: 2px;
@@ -122,6 +128,18 @@
       var cursor = document.getElementById('cursor');
       var subtext = document.getElementById('subtext');
 
+      // Render every character as its own (invisible) span up front, so
+      // the h1's line-wrap is fixed against the full final string from
+      // frame 1 — see the .char comment in the <style> block above.
+      var chars = HEADLINE.split('').map(function (ch) {
+        var span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = ch;
+        return span;
+      });
+      chars.forEach(function (span) { headlineText.appendChild(span); });
+      headlineText.appendChild(cursor);
+
       var typeTimeoutId = null;
       var subtextTimeoutId = null;
       var isFinalized = false;
@@ -129,9 +147,16 @@
 
       function typeStep() {
         if (isFinalized) return;
-        headlineText.textContent = HEADLINE.slice(0, charIndex);
+        chars[charIndex].classList.add('is-visible');
         charIndex++;
-        if (charIndex <= HEADLINE.length) {
+        // Keep the cursor immediately after the last revealed character
+        // instead of at the very end of the (already fully-laid-out) text.
+        if (charIndex < chars.length) {
+          headlineText.insertBefore(cursor, chars[charIndex]);
+        } else {
+          headlineText.appendChild(cursor);
+        }
+        if (charIndex < chars.length) {
           typeTimeoutId = setTimeout(typeStep, CHAR_DELAY);
         } else {
           subtextTimeoutId = setTimeout(revealSubtext, SUBTEXT_DELAY);
@@ -153,7 +178,7 @@
         isFinalized = true;
         clearTimeout(typeTimeoutId);
         clearTimeout(subtextTimeoutId);
-        headlineText.textContent = HEADLINE;
+        chars.forEach(function (span) { span.classList.add('is-visible'); });
         cursor.classList.add('is-hidden');
         subtext.classList.add('is-visible');
       }
