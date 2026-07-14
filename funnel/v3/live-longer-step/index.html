@@ -34,8 +34,14 @@
     }
 
     /* No CTA/footer on this screen, so .content just centers the title
-       block in the full remaining height below the header. */
+       block in the full remaining height below the header. The subtext
+       starts collapsed (max-height 0) rather than reserving its final
+       space up front, so when it grows in, the now-taller title block
+       gets re-centered by .content's flex centering — reading as the
+       headline being pushed up a bit rather than the subtext just
+       appearing in place below it. */
     .content { justify-content: center; padding: 0 16px; }
+    .title { text-align: center; }
 
     .title h1 {
       margin: 0 0 16px 0;
@@ -45,7 +51,7 @@
       line-height: 40px;
       letter-spacing: -0.08px;
       color: var(--white);
-      min-height: 120px; /* reserve 3 lines so the subtext below doesn't jump as it types */
+      min-height: 120px; /* reserve 3 lines so the headline itself doesn't jump as it types */
     }
     .title .cursor {
       display: inline-block;
@@ -62,10 +68,12 @@
       font-size: 19px;
       line-height: 24px;
       color: var(--white);
+      max-height: 0;
       opacity: 0;
-      transition: opacity 500ms ease;
+      overflow: hidden;
+      transition: opacity 500ms ease, max-height 500ms ease;
     }
-    .title p.is-visible { opacity: 1; }
+    .title p.is-visible { max-height: 100px; opacity: 1; }
   </style>
 </head>
 <body>
