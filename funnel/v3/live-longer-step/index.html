@@ -147,11 +147,21 @@
 
     .overview-hero { position: relative; flex: 1; }
 
-    .overview-title {
+    /* Wraps the heading + lede so the 8px gap between them is isolated
+       from everything else on the panel, matching the shared
+       .heading-group pattern (see components.css) — the lede sits
+       right below the heading regardless of how many lines the
+       heading itself wraps to. */
+    .overview-heading-group {
       position: absolute;
       top: 36px;
       left: 16px;
       right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .overview-title {
       margin: 0;
       font-family: 'Portada', serif;
       font-weight: 600;
@@ -159,6 +169,14 @@
       line-height: 40px;
       letter-spacing: -0.08px;
       color: #05594f;
+    }
+    .overview-lede {
+      margin: 0;
+      font-family: 'Hauss', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #525252;
     }
 
     .overview-subtext {
@@ -256,7 +274,10 @@
       <div class="screen-panel screen-panel--overview">
         <div class="header-spacer"></div>
         <div class="overview-hero">
-          <p class="overview-title">An annuity can turn your savings into income or protected growth you can&rsquo;t outlive, no matter what the market does.</p>
+          <div class="overview-heading-group">
+            <h1 class="overview-title">Income or growth you can&rsquo;t outlive.</h1>
+            <p class="overview-lede">An annuity makes it possible &mdash; no matter what the market does.</p>
+          </div>
           <p class="overview-subtext">Top-rated companies, Top-shelf advice</p>
           <div class="overview-logos-viewport">
             <div class="overview-logos-track" id="logosTrack">
