@@ -198,11 +198,17 @@
       animation-play-state: paused;
     }
     .overview-logos-track.is-scrolling { animation-play-state: running; }
+    /* Each logo SVG declares width/height="100%" with no absolute
+       intrinsic size, so browsers fall back to the default 300x150
+       replaced-element size instead of deriving a ratio from the
+       viewBox — setting only `height` and letting width go `auto`
+       stretches every logo to a flat 2:1 box. Pin both dimensions
+       explicitly (from the original Figma spec) instead. */
     .overview-logos-track img { display: block; flex-shrink: 0; }
-    .overview-logos-track .logo--american-national { height: 16.843px; }
-    .overview-logos-track .logo--athene { height: 16.525px; }
-    .overview-logos-track .logo--corebridge { height: 29.557px; }
-    .overview-logos-track .logo--protective { height: 19.997px; }
+    .overview-logos-track .logo--american-national { width: 98.513px; height: 16.843px; }
+    .overview-logos-track .logo--athene { width: 98.513px; height: 16.525px; }
+    .overview-logos-track .logo--corebridge { width: 89.028px; height: 29.557px; }
+    .overview-logos-track .logo--protective { width: 95.861px; height: 19.997px; }
     @keyframes logos-scroll {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
