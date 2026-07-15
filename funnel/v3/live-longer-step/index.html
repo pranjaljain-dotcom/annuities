@@ -21,22 +21,22 @@
 
     .header-overlay { position: absolute; top: 0; left: 0; width: 100%; z-index: 10; }
     .header-overlay .status-bar, .header-overlay .nav { background: transparent; }
-    .header-overlay .status-bar__time { color: #fff; transition: color 550ms ease-out; }
+    .header-overlay .status-bar__time { color: #fff; transition: color 900ms ease-out; }
     .header-overlay.is-light .status-bar__time { color: #000; }
     .header-overlay .status-bar__icons svg rect,
     .header-overlay .status-bar__icons svg circle,
     .header-overlay .status-bar__icons svg path {
       fill: #fff; stroke: #fff;
-      transition: fill 550ms ease-out, stroke 550ms ease-out;
+      transition: fill 900ms ease-out, stroke 900ms ease-out;
     }
     .header-overlay.is-light .status-bar__icons svg rect,
     .header-overlay.is-light .status-bar__icons svg circle,
     .header-overlay.is-light .status-bar__icons svg path { fill: #000; stroke: #000; }
-    .header-overlay .nav__logo svg path { fill: #fff; transition: fill 550ms ease-out; }
+    .header-overlay .nav__logo svg path { fill: #fff; transition: fill 900ms ease-out; }
     .header-overlay.is-light .nav__logo svg path { fill: #056257; }
-    .header-overlay .nav__help-label { color: #e3f8f6; transition: color 550ms ease-out; }
+    .header-overlay .nav__help-label { color: #e3f8f6; transition: color 900ms ease-out; }
     .header-overlay.is-light .nav__help-label { color: #525252; }
-    .header-overlay .nav__help-number { color: #fff; transition: color 550ms ease-out; }
+    .header-overlay .nav__help-number { color: #fff; transition: color 900ms ease-out; }
     .header-overlay.is-light .nav__help-number { color: #04463e; }
 
     /* No back button on either panel (it's an entry screen) — the logo
@@ -52,7 +52,7 @@
       z-index: 10;
       padding: 16px;
       opacity: 0;
-      transition: opacity 550ms ease-out;
+      transition: opacity 900ms ease-out;
     }
     .cta-overlay.is-visible { opacity: 1; }
     .cta-overlay button {
@@ -83,7 +83,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     .screen-stack.is-pushed { transform: translateY(-812px); }
     .screen-panel {
@@ -305,11 +305,9 @@
       }
 
       // The header/CTA color crossfade and the content push all fire at
-      // once, on the same 550ms ease-out transition, so the fixed
+      // once, on the same 900ms ease-out transition, so the fixed
       // header/CTA read as part of the same continuous motion instead of
-      // a separate step. The quicker, decisive ease-out (vs. the previous
-      // slower ease-in-out) makes the full 812px push read as a snappy
-      // beat rather than a deliberate full-screen page change.
+      // a separate step.
       function pushToOverview() {
         if (isFinalized) return;
         screenStack.classList.add('is-pushed');
