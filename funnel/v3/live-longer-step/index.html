@@ -174,12 +174,39 @@
       color: #7e7e7e;
     }
 
-    .overview-logos { position: absolute; left: 0; right: 0; }
-    .overview-logos img { position: absolute; display: block; }
-    .overview-logos .logo--american-national { left: 21px; top: 535.93px; width: 98.513px; height: 16.843px; }
-    .overview-logos .logo--athene { left: 137.99px; top: 535.93px; width: 98.513px; height: 16.525px; }
-    .overview-logos .logo--corebridge { left: 254.97px; top: 523px; width: 89.028px; height: 29.557px; }
-    .overview-logos .logo--protective { left: 354px; top: 531px; width: 95.861px; height: 19.997px; }
+    /* Baseline-aligned logo strip. All four logos share a common visual
+       baseline in the original Figma spec (bottom edges land within ~2px
+       of each other despite differing heights), so the scrolling track
+       uses align-items: flex-end to reproduce that instead of the
+       original per-logo top offsets. The track is doubled end-to-end and
+       animated by exactly -50% so the loop has no visible seam. */
+    .overview-logos-viewport {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 523px;
+      height: 30px;
+      overflow: hidden;
+    }
+    .overview-logos-track {
+      display: flex;
+      align-items: flex-end;
+      gap: 32px;
+      width: max-content;
+      padding-left: 21px;
+      animation: logos-scroll 16s linear infinite;
+      animation-play-state: paused;
+    }
+    .overview-logos-track.is-scrolling { animation-play-state: running; }
+    .overview-logos-track img { display: block; flex-shrink: 0; }
+    .overview-logos-track .logo--american-national { height: 16.843px; }
+    .overview-logos-track .logo--athene { height: 16.525px; }
+    .overview-logos-track .logo--corebridge { height: 29.557px; }
+    .overview-logos-track .logo--protective { height: 19.997px; }
+    @keyframes logos-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
   </style>
 </head>
 <body>
@@ -225,11 +252,17 @@
         <div class="overview-hero">
           <p class="overview-title">An annuity can turn your savings into income or protected growth you can&rsquo;t outlive, no matter what the market does.</p>
           <p class="overview-subtext">Top-rated companies, Top-shelf advice</p>
-          <div class="overview-logos">
-            <img class="logo--american-national" src="assets/american-national.svg" alt="American National" />
-            <img class="logo--athene" src="assets/athene.svg" alt="Athene" />
-            <img class="logo--corebridge" src="assets/corebridge.svg" alt="Corebridge Financial" />
-            <img class="logo--protective" src="assets/protective.svg" alt="Protective" />
+          <div class="overview-logos-viewport">
+            <div class="overview-logos-track" id="logosTrack">
+              <img class="logo--american-national" src="assets/american-national.svg" alt="American National" />
+              <img class="logo--athene" src="assets/athene.svg" alt="Athene" />
+              <img class="logo--corebridge" src="assets/corebridge.svg" alt="Corebridge Financial" />
+              <img class="logo--protective" src="assets/protective.svg" alt="Protective" />
+              <img class="logo--american-national" src="assets/american-national.svg" alt="" aria-hidden="true" />
+              <img class="logo--athene" src="assets/athene.svg" alt="" aria-hidden="true" />
+              <img class="logo--corebridge" src="assets/corebridge.svg" alt="" aria-hidden="true" />
+              <img class="logo--protective" src="assets/protective.svg" alt="" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </div>
@@ -254,12 +287,15 @@
       var SUBTEXT_DELAY = 1000;
       var PUSH_DELAY = 1200; // hold on the finished intro before pushing up
 
+      var LOGOS_SCROLL_DELAY = 500; // after the push transition finishes
+
       var headlineText = document.getElementById('headlineText');
       var cursor = document.getElementById('cursor');
       var subtext = document.getElementById('subtext');
       var screenStack = document.getElementById('screenStack');
       var headerOverlay = document.getElementById('headerOverlay');
       var ctaOverlay = document.getElementById('ctaOverlay');
+      var logosTrack = document.getElementById('logosTrack');
 
       // Render every character as its own (invisible) span up front, so
       // the h1's line-wrap is fixed against the full final string from
@@ -276,6 +312,7 @@
       var typeTimeoutId = null;
       var subtextTimeoutId = null;
       var pushTimeoutId = null;
+      var scrollTimeoutId = null;
       var isFinalized = false;
       var charIndex = 0;
 
@@ -315,6 +352,19 @@
         ctaOverlay.classList.add('is-visible');
       }
 
+      // Starts the logo marquee a beat after the push transition settles,
+      // rather than the moment it ends, so the scroll reads as a distinct
+      // follow-up beat instead of part of the same motion. Keyed off
+      // transitionend (not a hardcoded delay) so it stays in sync
+      // regardless of the push transition's own duration.
+      screenStack.addEventListener('transitionend', function (event) {
+        if (event.propertyName !== 'transform') return;
+        if (isFinalized || !screenStack.classList.contains('is-pushed')) return;
+        scrollTimeoutId = setTimeout(function () {
+          logosTrack.classList.add('is-scrolling');
+        }, LOGOS_SCROLL_DELAY);
+      });
+
       typeTimeoutId = setTimeout(typeStep, CHAR_DELAY);
 
       // Jump straight to the fully-settled end state (overview panel in
@@ -326,12 +376,14 @@
         clearTimeout(typeTimeoutId);
         clearTimeout(subtextTimeoutId);
         clearTimeout(pushTimeoutId);
+        clearTimeout(scrollTimeoutId);
         chars.forEach(function (span) { span.classList.add('is-visible'); });
         cursor.classList.add('is-hidden');
         subtext.classList.add('is-visible');
         screenStack.classList.add('is-pushed');
         headerOverlay.classList.add('is-light');
         ctaOverlay.classList.add('is-visible');
+        logosTrack.classList.add('is-scrolling');
       }
 
       window.addEventListener('pageshow', function (event) {
